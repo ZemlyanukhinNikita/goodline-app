@@ -6,5 +6,8 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
         ArrayList<User> Users = new ArrayList<User>();
+        Users.add(new User((long)1,"Vasya","qwerty"));
+        Users.add(new User((long)2,"Vasya123","123"));
+
     }
 }
