@@ -9,6 +9,9 @@ public class Main {
         Users.add(new User((long)1,"Vasya","qwerty"));
         Users.add(new User((long)2,"Vasya123","123"));
 
+        ArrayList<Resources> UsersResources = new ArrayList<Resources>();
+
+
         if(args.length==2){
             String login = args[0];
             String password = args[1];
