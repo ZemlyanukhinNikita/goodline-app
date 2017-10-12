@@ -14,6 +14,8 @@ public class Main {
         UsersResources.add(new Resources((long)2,"H.I.J"));
 
         ArrayList<ResourceUsersRoles> ResUserRoles = new ArrayList<ResourceUsersRoles>();
+        ResUserRoles.add(new ResourceUsersRoles((long)1,(long)1,(long)1,Roles.READ));
+        ResUserRoles.add(new ResourceUsersRoles((long)2,(long)2,(long)2,Roles.EXECUTE));
 
 
         if(args.length==2){
