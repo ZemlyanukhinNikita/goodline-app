@@ -13,6 +13,8 @@ public class Main {
         UsersResources.add(new Resources((long)1,"A.B"));
         UsersResources.add(new Resources((long)2,"H.I.J"));
 
+        ArrayList<ResourceUsersRoles> ResUserRoles = new ArrayList<ResourceUsersRoles>();
+
 
         if(args.length==2){
             String login = args[0];
