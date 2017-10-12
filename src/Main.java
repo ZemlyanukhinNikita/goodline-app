@@ -10,6 +10,8 @@ public class Main {
         Users.add(new User((long)2,"Vasya123","123"));
 
         ArrayList<Resources> UsersResources = new ArrayList<Resources>();
+        UsersResources.add(new Resources((long)1,"A.B"));
+        UsersResources.add(new Resources((long)2,"H.I.J"));
 
 
         if(args.length==2){
