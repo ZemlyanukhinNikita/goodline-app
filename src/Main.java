@@ -17,13 +17,13 @@ public class Main {
         ArrayList<ResourceUsersRoles> ResUserRoles = new ArrayList<ResourceUsersRoles>();
         ResUserRoles.add(new ResourceUsersRoles((long)1,(long)1,(long)1,Roles.READ));
         ResUserRoles.add(new ResourceUsersRoles((long)2,(long)2,(long)2,Roles.EXECUTE));
-
+        String login = args[0];
+        String password = args[1];
         if (args.length < 2) {
             System.out.println("Not enough data transmitted");
         }
-        else if (args.length >= 2){
-            String login = args[0];
-            String password = args[1];
+        else if (args.length == 2){
+
             for(int i = 0; i < Users.size(); i++){
                 if((login.equals(Users.get(i).getLogin()) && password.equals(Users.get(i).getPassword()))){
                     //System.out.println("0");}
@@ -32,12 +32,16 @@ public class Main {
             }
             for(int i = 0; i < Users.size(); i++){
                 if(login.equals(Users.get(i).getLogin())){
-                    if(password!=(Users.get(i).getPassword())){
+                    if(!password.equals(Users.get(i).getPassword())){
                         System.exit(2);
                     }}
             }
             for(int i = 0; i < Users.size(); i++){
-                if(login!=(Users.get(i).getLogin())) {
+                System.out.println(Users.get(i).getLogin());
+                System.out.println(login);
+                if(login.equals(Users.get(i).getLogin())){break;}
+                else if(!login.equals(Users.get(i).getLogin())) {
+
                     System.exit(1);
                 }
             }
@@ -46,7 +50,7 @@ public class Main {
         /*if(args.length>=3) {
             for (int i = 0; i < Users.size(); i++) {
                 for (int j = 0; j < ResUserRoles.size(); j++) {
-                    if(Users.get(i).getId()==(ResUserRoles.get(j).getUser_id())){
+                    if((Users.get(i).getId()==(ResUserRoles.get(j).getUser_id())) && login.equals(Users.get(i).getLogin()) && password.equals(Users.get(i).getPassword())){
                         System.out.println(Users.get(i).getId());
                         System.out.println(ResUserRoles.get(j).getUser_id());
                         System.out.println(args[2]);
@@ -56,7 +60,6 @@ public class Main {
                             //i++;
                             //j++;
                         }
-
 
                     }
                 }
