@@ -4,6 +4,25 @@ import java.util.ArrayList;
  * Created by Nikita Zemlyanukhin on 11.10.2017.
  */
 public class Main {
+    private static void isCorrectLoginPassword(String log,String pass,ArrayList<User> Users) {
+
+        for(int i = 0; i < Users.size(); i++){
+            if(log.equals(Users.get(i).getLogin())){
+                if(!pass.equals(Users.get(i).getPassword())){
+                    System.exit(2);
+                }}
+        }
+        for(int i = 0; i < Users.size(); i++){
+            //System.out.println(Users.get(i).getLogin());
+           // System.out.println(log);
+            if(log.equals(Users.get(i).getLogin())){break;}
+            else if(!log.equals(Users.get(i).getLogin())) {
+
+                System.exit(1);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         //Коллекция пользователей
         ArrayList<User> Users = new ArrayList<User>();
@@ -19,6 +38,7 @@ public class Main {
         ResUserRoles.add(new ResourceUsersRoles((long)2,(long)2,(long)2,Roles.EXECUTE));
         String login = args[0];
         String password = args[1];
+        //Authentication
         if (args.length < 2) {
             System.out.println("Not enough data transmitted");
         }
@@ -30,24 +50,13 @@ public class Main {
                     System.exit(0);}
 
             }
-            for(int i = 0; i < Users.size(); i++){
-                if(login.equals(Users.get(i).getLogin())){
-                    if(!password.equals(Users.get(i).getPassword())){
-                        System.exit(2);
-                    }}
-            }
-            for(int i = 0; i < Users.size(); i++){
-                System.out.println(Users.get(i).getLogin());
-                System.out.println(login);
-                if(login.equals(Users.get(i).getLogin())){break;}
-                else if(!login.equals(Users.get(i).getLogin())) {
+            isCorrectLoginPassword(login,password,Users);
 
-                    System.exit(1);
-                }
-            }
         }
 
-        /*if(args.length>=3) {
+        if(args.length>=3) {
+            boolean flag=false;
+            isCorrectLoginPassword(login,password,Users);
             for (int i = 0; i < Users.size(); i++) {
                 for (int j = 0; j < ResUserRoles.size(); j++) {
                     if((Users.get(i).getId()==(ResUserRoles.get(j).getUser_id())) && login.equals(Users.get(i).getLogin()) && password.equals(Users.get(i).getPassword())){
@@ -56,16 +65,15 @@ public class Main {
                         System.out.println(args[2]);
                         System.out.println(ResUserRoles.get(j).getRole());
                         if(args[2].equals(ResUserRoles.get(j).getRole().toString())){
-                            System.exit(0);
-                            //i++;
-                            //j++;
+                            flag=true;
                         }
 
                     }
                 }
 
             }
-        }*/
+            if(!flag){System.exit(3);}
+        }
 
     }
 }
