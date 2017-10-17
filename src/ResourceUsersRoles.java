@@ -4,14 +4,14 @@
 public class ResourceUsersRoles {
     private Long id;
     private Long user_id;
-    private Long resources_id;
     private Roles role;
+    private String path;
 
-    public ResourceUsersRoles(Long id, Long user_id, Long resources_id, Roles role) {
+    public ResourceUsersRoles(Long id, Long user_id, Roles role, String path) {
         this.id = id;
         this.user_id = user_id;
-        this.resources_id = resources_id;
         this.role = role;
+        this.path = path;
     }
 
     public Long getId() {
@@ -30,14 +30,6 @@ public class ResourceUsersRoles {
         this.user_id = user_id;
     }
 
-    public Long getResources_id() {
-        return resources_id;
-    }
-
-    public void setResources_id(Long resources_id) {
-        this.resources_id = resources_id;
-    }
-
     public Roles getRole() {
         return role;
     }
@@ -46,4 +38,11 @@ public class ResourceUsersRoles {
         this.role = role;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 }
