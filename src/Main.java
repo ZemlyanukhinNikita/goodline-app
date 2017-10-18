@@ -20,6 +20,31 @@ public class Main {
             } if (!l) { System.exit(1);}
         }
 
+        private static boolean isCorrectPath(String argPath, String path) {
+            String Arg = new String(argPath);
+            String Pth = new String(path);
+            String [] Arg1 = Arg.split("\\.");
+            String [] Pth1 = Pth.split("\\.");
+            if(Arg1.length<Pth1.length) {
+                return false;
+            } else {
+                for (int i = 0; i < Pth1.length; i++) {
+                    //System.out.println(Arg1[i]);
+
+                    //System.out.println(Str1[i]);
+                    //System.out.println("\\\\");
+                    if(!Arg1[i].equals(Pth1[i])){
+                        return false;
+                    }
+                }
+            }
+            return true;
+            // System.out.println(Arg1.length);
+            // System.out.println(Str1.length);
+
+            // p=true;
+            //System.out.println(p);
+    }
 
     public static void main(String[] args) {
         //Коллекция пользователей
@@ -69,6 +94,8 @@ public class Main {
             if(!flag){System.exit(3);}
         }
         boolean flagRes=false;
+        boolean correctPath = false;
+        int k=0;
         for (int j = 0; j <ResUserRoles.size() ; j++){
         for (int i = 0; i < Users.size(); i++) {
 
@@ -78,12 +105,16 @@ public class Main {
                        // System.out.println(ResUserRoles.get(j).getUser_id());
                         if(args[3].equals(ResUserRoles.get(i).getPath()))
                             flagRes=true;
+                            k=i;
                     }
                 }
             }
-        } if(!flagRes){System.exit(4);}
 
+        }
+        correctPath = isCorrectPath(args[3],ResUserRoles.get(k).getPath());
+        if(!correctPath && !flagRes){System.exit(4);}
 
+            
 
 
     }
