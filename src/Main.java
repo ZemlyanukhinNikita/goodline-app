@@ -5,6 +5,17 @@ import java.time.*;
  * Created by Nikita Zemlyanukhin on 11.10.2017.
  */
 public class Main {
+
+    public static boolean isValidVolume(String v) {
+        try {
+            int Volume = Integer.parseInt(v);
+        }
+        catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     public static boolean isValidDate(String d) {
         try {
             LocalDate data = LocalDate.parse(d);
@@ -125,10 +136,12 @@ public class Main {
         correctPath = isCorrectPath(args[3],ResUserRoles.get(k).getPath());
         if(!correctPath && !flagRes){System.exit(4);}
 
-        boolean validDate = isValidDate(args[4]);
-        if(!validDate) {System.exit(5);}
+        boolean validDateStart = isValidDate(args[4]);
+        boolean validDateEnd = isValidDate(args[5]);
+        if(!validDateStart || !validDateEnd) {System.exit(5);}
 
-
+        boolean validVolume = isValidVolume(args[6]);
+        if (!validVolume) {System.exit(5);}
 
             
 
