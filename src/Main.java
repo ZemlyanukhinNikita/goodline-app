@@ -1,9 +1,20 @@
 import java.util.ArrayList;
+import java.time.*;
 
 /**
  * Created by Nikita Zemlyanukhin on 11.10.2017.
  */
 public class Main {
+    public static boolean isValidDate(String d) {
+        try {
+            LocalDate data = LocalDate.parse(d);
+        }
+        catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     private static void isCorrectLoginPassword(String log,String pass,ArrayList<User> Users) {
 
         for(int i = 0; i < Users.size(); i++){
@@ -113,6 +124,11 @@ public class Main {
         }
         correctPath = isCorrectPath(args[3],ResUserRoles.get(k).getPath());
         if(!correctPath && !flagRes){System.exit(4);}
+
+        boolean validDate = isValidDate(args[4]);
+        if(!validDate) {System.exit(5);}
+
+
 
             
 
