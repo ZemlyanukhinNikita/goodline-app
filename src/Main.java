@@ -1,3 +1,6 @@
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.time.*;
 
@@ -5,6 +8,41 @@ import java.time.*;
  * Created by Nikita Zemlyanukhin on 11.10.2017.
  */
 public class Main {
+    static class Hash {
+        public static String GetHash(String source)
+        {
+
+            MessageDigest md5 ;
+            StringBuffer  hexString = new StringBuffer();
+
+            try {
+                md5 = MessageDigest.getInstance("md5");
+                md5.reset();
+                md5.update(source.getBytes());
+                byte messageDigest[] = md5.digest();
+
+                for (int i = 0; i < messageDigest.length; i++) {
+                    hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+                }
+            }
+            catch (NoSuchAlgorithmException e)
+            {
+                return "";
+            }
+            return hexString.toString();
+        }
+        public static String GetSalt(){
+            StringBuffer  hexString = new StringBuffer();
+            SecureRandom random = new SecureRandom();
+            byte[] salt = new byte[16];
+            random.nextBytes(salt);
+            String s = "";
+            for (int i = 0; i < salt.length; i++) {
+                s = String.valueOf(hexString.append(Integer.toHexString(0xFF & salt[i])));
+            }
+            return s;
+        }
+    }
 
     public static boolean isValidVolume(String v) {
         try {
@@ -137,6 +175,9 @@ public class Main {
         if (args.length < 2) {
             System.out.println("Not enough data transmitted");
         }
+        //String pass;
+        //args[1]=Hash.GetHash(Hash.GetHash(args[1])+Hash.GetSalt());
+        //System.out.println(Hash.GetHash(Hash.GetHash(args[1])+Hash.GetSalt()));
         //Аутентификация
         isAuthentication(args[0],args[1],Users,ArgLenght);
         //Авторизация
