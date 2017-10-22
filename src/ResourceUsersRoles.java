@@ -1,5 +1,7 @@
 /**
+ * class ResourceUsersRoles
  * Created by Nikita Zemlyanukhin on 12.10.2017.
+ * Copyright (c). All rights reserved.
  */
 public class ResourceUsersRoles {
     private Long id;
@@ -22,7 +24,7 @@ public class ResourceUsersRoles {
         this.id = id;
     }
 
-    public Long getUser_id() {
+    Long getUser_id() {
         return user_id;
     }
 
@@ -30,19 +32,20 @@ public class ResourceUsersRoles {
         this.user_id = user_id;
     }
 
-    public Roles getRole() {
-        return role;
-    }
-
     public void setRole(Roles role) {
         this.role = role;
-    }
-
-    public String getPath() {
-        return path;
     }
 
     public void setPath(String path) {
         this.path = path;
     }
+
+    Roles getRole() {
+        return role;
+    }
+
+    String getPath() {
+        return path;
+    }
+
 }
