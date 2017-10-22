@@ -1,3 +1,5 @@
+import org.apache.commons.cli.*;
+
 public class UserData {
     private String login;
     private String password;
@@ -7,26 +9,69 @@ public class UserData {
     private String de;
     private String volume;
 
-    public UserData(String login, String password) {
-        this.login = login;
-        this.password = password;
+    public static Options options = new Options();
+    private static CommandLine cmd;
+    private static CommandLineParser parser= new DefaultParser();
+
+    public UserData(){
+        options.addOption("l",true,"User login");
+        options.addOption("p",true,"USer password");
+        options.addOption("r",true,"User role");
+        options.addOption("pt",true,"User resource");
+        options.addOption("ds",true,"Data start");
+        options.addOption("de",true,"Data end");
+        options.addOption("v",true,"User volume");
+        options.addOption("h",false,"Help information");
     }
 
-    public UserData(String login, String password, String role, String path) {
-        this.login = login;
-        this.password = password;
-        this.role = role;
-        this.path = path;
+
+    public boolean isAuthentication(){
+        return (cmd.hasOption("l") && cmd.hasOption("p"));
     }
 
-    public UserData(String login, String password, String role, String path, String ds, String de, String volume) {
-        this.login = login;
-        this.password = password;
-        this.role = role;
-        this.path = path;
-        this.ds = ds;
-        this.de = de;
-        this.volume = volume;
+    public boolean isAuthorization(){
+        return (isAuthentication() && cmd.hasOption("r") && cmd.hasOption("pt"));
+    }
+
+    public boolean isAccounts(){
+        return (isAuthorization() && cmd.hasOption("ds") && cmd.hasOption("de") && cmd.hasOption("v"));
+    }
+
+    public boolean isHelp() {
+        return (cmd.hasOption("") || cmd.hasOption("h"));
+    }
+
+    public static void help() {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("Main", options);
+    }
+
+    public  void cliParser(String[] args) {
+        try {
+            cmd = parser.parse(options,args);
+            if(isAuthentication()){
+                setLogin(cmd.getOptionValue("l"));
+                setPassword(cmd.getOptionValue("p"));
+            }
+
+            if (isAuthorization()){
+                setRole(cmd.getOptionValue("r"));
+                setPath(cmd.getOptionValue("pt"));
+            }
+
+            if (isAccounts()){
+                setDs(cmd.getOptionValue("ds"));
+                setDe(cmd.getOptionValue("de"));
+                setVolume(cmd.getOptionValue("v"));
+            }
+            if (isHelp()){
+                help();
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public String getLogin() {
@@ -84,4 +129,6 @@ public class UserData {
     public void setVolume(String volume) {
         this.volume = volume;
     }
+
+
 }

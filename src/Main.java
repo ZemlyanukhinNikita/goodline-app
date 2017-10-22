@@ -3,12 +3,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 /**
  * Created by Nikita Zemlyanukhin on 11.10.2017.
  */
 public class Main {
-    public static boolean isValidVolume(String v) {
+
+    static UserData userData = new UserData();
+    private static boolean isValidVolume(String v) {
         try {
             int Volume = Integer.parseInt(v);
         } catch (Exception e) {
@@ -26,18 +27,15 @@ public class Main {
         return true;
     }
 
-    private static void isAuthentication(String log, String pass, ArrayList<User> Users, int ArgLength) {
-        //System.out.println(ArgLenght);
-        if (ArgLength == 2) {
+    public static void Authentication(String log, String pass, ArrayList<User> Users) {
 
             for (User User : Users) {
                 if ((log.equals(User.getLogin()) && Hash.GetHash(Hash.GetHash(pass + User.getSalt())).equals(Hash.GetHash(Hash.GetHash(User.getPassword() + User.getSalt()))))) {
-                    System.exit(0);
+                    break;
                 }
 
             }
 
-        }
         for (User User : Users) {
             if (log.equals(User.getLogin())) {
                 if (!Hash.GetHash(Hash.GetHash(pass + User.getSalt())).equals(Hash.GetHash(Hash.GetHash(User.getPassword() + User.getSalt())))) {
@@ -74,8 +72,8 @@ public class Main {
         return true;
     }
 
-    public static void isAuthorization(String log, String pass, String role, String resource, ArrayList<User> Users, ArrayList<ResourceUsersRoles> ResUserRoles, int ArgLength) {
-        isAuthentication(log, pass, Users, ArgLength);
+    public static void Authorization(String log, String pass, String role, String resource, ArrayList<User> Users, ArrayList<ResourceUsersRoles> ResUserRoles) {
+        Authentication(log, pass, Users);
         boolean flag = false;
         for (int i = 0; i < Users.size(); i++) {
             for (int j = 0; j < ResUserRoles.size(); j++) {
@@ -109,8 +107,8 @@ public class Main {
         }
     }
 
-    public static void isAccounts(String log, String pass, String role, String resource,ArrayList<User> Users, ArrayList<ResourceUsersRoles> ResUsersRoles, String sd, String ed, String vol, int ArgLenght) {
-        isAuthorization(log,pass,role,resource,Users,ResUsersRoles,ArgLenght);
+    public static void Accounts(String log, String pass, String role, String resource, ArrayList<User> Users, ArrayList<ResourceUsersRoles> ResUsersRoles, String sd, String ed, String vol) {
+        Authorization(log,pass,role,resource,Users,ResUsersRoles);
 
         boolean validDateStart = isValidDate(sd);
         boolean validDateEnd = isValidDate(ed);
@@ -126,8 +124,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int ArgLenght = args.length;
-
 
         //Коллекция пользователей
         ArrayList<User> Users = new ArrayList<User>();
@@ -138,30 +134,23 @@ public class Main {
         ResUserRoles.add(new ResourceUsersRoles((long) 1, (long) 1, Roles.READ, "A.B"));
         ResUserRoles.add(new ResourceUsersRoles((long) 2, (long) 2, Roles.EXECUTE, "H.I.J"));
 
-        if (args.length < 2) {
-            System.out.println("Not enough data transmitted");
+
+        //userData.help();
+
+       userData.cliParser(args);
+
+       if(userData.isAuthentication()){
+           Authentication(userData.getLogin(),userData.getPassword(),Users);
+       }
+        if(userData.isAuthorization()){
+            Authorization(userData.getLogin(),userData.getPassword(),userData.getRole(),userData.getPath(),Users,ResUserRoles);
         }
-        if(args.length==2){
-            UserData usData = new UserData(args[0],args[1]);
-            isAuthentication(usData.getLogin(), usData.getPassword(), Users, ArgLenght);
+        if(userData.isAccounts()){
+            Accounts(userData.getLogin(),userData.getPassword(),userData.getRole(),userData.getPath(),Users,ResUserRoles,userData.getDs(),userData.getDe(),userData.getVolume());
         }
-        if(args.length==4){
-            UserData usData = new UserData(args[0],args[1],args[2],args[3]);
-            isAuthorization(usData.getLogin(), usData.getPassword(), usData.getRole(), usData.getPath(), Users, ResUserRoles, ArgLenght);
-        }
-        if(args.length==7) {
-            UserData usData = new UserData(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
-            isAccounts(usData.getLogin(), usData.getPassword(), usData.getRole(), usData.getPath(), Users, ResUserRoles,usData.getDs(), usData.getDe(), usData.getVolume(), ArgLenght);
-        }/*
-        isAuthentication(args[0], args[1], Users, ArgLenght);
-        //Авторизация
-        if (args.length == 4) {
-            isAuthorization(args[0], args[1], args[2], args[3], Users, ResUserRoles, ArgLenght);
-        }
-        //Аккаунтинг
-        if (args.length == 7) {
-            isAccounts(args[4], args[5], args[6]);
-        }*/
+
+
+
     }
 
     static class Hash {
