@@ -1,42 +1,19 @@
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import static java.lang.Integer.parseInt;
+
 import static java.lang.Integer.toHexString;
 
-/**
- * class Main
- * Created by Nikita Zemlyanukhin on 11.10.2017.
- * Copyright (c). All rights reserved.
- */
-
 public class Main {
-    private static boolean isValidVolume(String v) {
-        try {
-            parseInt(v);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+    private static boolean isRightHashPassword(String pass, String userPass, String salt) {
+        return Hash.getHash(Hash.getHash(pass + salt)).equals(Hash.getHash(Hash.getHash(userPass + salt)));
     }
-
-    private static boolean isValidDate(String d) {
-        try {
-            LocalDate.parse(d);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-    //Аутентификация
-    private static void Authentication(String log, String pass, ArrayList<User> Users) {
+    private static void authenticate(String log, String pass, ArrayList<User> Users) {
         //По коллеции User сравниваем логин и пароль с командной строки с логином и паролем пользователя из коллекции
         for (User User : Users) {
 
-            if (((log.equals(User.getLogin())) && (Hash.getHash(Hash.getHash(pass + User.getSalt()))).equals
-                    (Hash.getHash(Hash.getHash(User.getPassword() + User.getSalt()))))) {
+            if ((log.equals(User.getLogin()) && (isRightHashPassword(pass,User.getPassword(),User.getSalt())))) {
                 break;
             }
         }
@@ -45,8 +22,7 @@ public class Main {
 
             if (log.equals(User.getLogin())) {
 
-                if (!Hash.getHash(Hash.getHash(pass + User.getSalt())).equals
-                        (Hash.getHash(Hash.getHash(User.getPassword() + User.getSalt())))) {
+                if (!isRightHashPassword(pass,User.getPassword(),User.getSalt())) {
                     System.exit(2);
                 }
             }
@@ -63,38 +39,18 @@ public class Main {
             System.exit(1);
         }
     }
-
-    private static boolean isCorrectPath(String argPath, String path) {
-        String[] Arg = argPath.split("\\.");
-        String[] Pth = path.split("\\.");
-
-        if (Arg.length < Pth.length) {
-            return false;
-        } else {
-            for (int i = 0; i < Pth.length; i++) {
-
-                if (!Arg[i].equals(Pth[i])) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private static void Authorization(String log, String pass, String role, String resource,
-                                      ArrayList<User> Users, ArrayList<ResourceUsersRoles> ResUserRoles) {
-        Authentication(log, pass, Users);
+    private static void authorize(String log, String pass, String role, String resource,
+                                  ArrayList<User> Users, ArrayList<ResourceUsersRoles> ResUserRoles) {
+        authenticate(log, pass, Users);
         for (User User : Users) {
             for (ResourceUsersRoles ResUserRole : ResUserRoles) {
 
-                if ((User.getId().equals(ResUserRole.getUser_id())) && (log.equals(User.getLogin()))) {
-
-                    if (!role.equals(ResUserRole.getRole().toString())) {
+                if ((User.getId().equals(ResUserRole.getUser_id())) && (log.equals(User.getLogin())) && (!role.equals(ResUserRole.getRole().toString()))) {
                         System.exit(3);
-                    }
                 }
             }
         }
+
         boolean flagRes = false;
         boolean correctPath;
         int k = 0;
@@ -104,29 +60,29 @@ public class Main {
                 if (log.equals(Users.get(i).getLogin())) {
 
                     if ((Users.get(i).getId()).equals(ResUserRoles.get(i).getUser_id())) {
-
-                        if (resource.equals(ResUserRoles.get(i).getPath()))
+                        k = i;
+                        if (resource.equals(ResUserRoles.get(i).getPath())) {
                             flagRes = true;
-                            k = i;
+                        }
+
                     }
                 }
             }
         }
-        correctPath = isCorrectPath(resource, ResUserRoles.get(k).getPath());
+        correctPath = Validation.isCorrectPath(resource, ResUserRoles.get(k).getPath());
         if (!correctPath && !flagRes) {
             System.exit(4);
         }
     }
-
-    private static void Accounts(String log, String pass, String role, String resource, String sd, String ed, String vol,
+    private static void account(String log, String pass, String role, String resource, String sd, String ed, String vol,
                                  ArrayList<User> Users, ArrayList<ResourceUsersRoles> ResUsersRoles) {
-        Authorization(log, pass, role, resource, Users, ResUsersRoles);
-        boolean validDateStart = isValidDate(sd);
-        boolean validDateEnd = isValidDate(ed);
+        authorize(log, pass, role, resource, Users, ResUsersRoles);
+        boolean validDateStart = Validation.isValidDate(sd);
+        boolean validDateEnd = Validation.isValidDate(ed);
         if (!validDateStart || !validDateEnd) {
             System.exit(5);
         }
-        boolean validVolume = isValidVolume(vol);
+        boolean validVolume = Validation.isValidVolume(vol);
         if (!validVolume) {
             System.exit(5);
         }
@@ -141,6 +97,7 @@ public class Main {
         ArrayList<ResourceUsersRoles> ResUserRoles = new ArrayList<>();
         ResUserRoles.add(new ResourceUsersRoles((long) 1, (long) 1, Roles.READ, "A.B"));
         ResUserRoles.add(new ResourceUsersRoles((long) 2, (long) 2, Roles.EXECUTE, "H.I.J"));
+        ResUserRoles.add(new ResourceUsersRoles((long) 3, (long) 1, Roles.READ, "H.I.J"));
 
         UserData userData = new UserData();
         userData.cliParser(args);
@@ -150,20 +107,19 @@ public class Main {
         }
 
         if (userData.isAuthentication()) {
-            Authentication(userData.getLogin(), userData.getPassword(), Users);
+            authenticate(userData.getLogin(), userData.getPassword(), Users);
         }
 
         if (userData.isAuthorization()) {
-            Authorization(userData.getLogin(), userData.getPassword(), userData.getRole(), userData.getPath(),
+            authorize(userData.getLogin(), userData.getPassword(), userData.getRole(), userData.getPath(),
                     Users, ResUserRoles);
         }
 
         if (userData.isAccounts()) {
-            Accounts(userData.getLogin(), userData.getPassword(), userData.getRole(), userData.getPath(),
+            account(userData.getLogin(), userData.getPassword(), userData.getRole(), userData.getPath(),
                     userData.getDs(), userData.getDe(), userData.getVolume(), Users, ResUserRoles);
         }
     }
-
     static class Hash {
         static String getHash(String source) {
             MessageDigest md5;

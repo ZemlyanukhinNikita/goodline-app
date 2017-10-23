@@ -42,4 +42,6 @@ java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya -p qwerty -r READ 
 echo "5" %ERRORLEVEL%
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya -p qwerty -r READ -pt A.B -ds 1111111111 -de 2222222222 -v str100
 echo "5" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya -p qwerty -r READ -pt H.I.J
+echo "0" %ERRORLEVEL%
 PAUSE

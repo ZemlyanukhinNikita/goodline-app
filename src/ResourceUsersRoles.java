@@ -1,8 +1,3 @@
-/**
- * class ResourceUsersRoles
- * Created by Nikita Zemlyanukhin on 12.10.2017.
- * Copyright (c). All rights reserved.
- */
 
 public class ResourceUsersRoles {
     private Long id;

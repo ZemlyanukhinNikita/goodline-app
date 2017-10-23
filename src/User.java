@@ -1,8 +1,3 @@
-/**
- * class User
- * Created by Nikita Zemlyanukhin on 11.10.2017.
- * Copyright (c). All rights reserved.
- */
 
 public class User {
     private Long id;

@@ -1,11 +1,5 @@
 import org.apache.commons.cli.*;
 
-/**
- * class UserData
- * Created by Nikita Zemlyanukhin on 11.10.2017.
- * Copyright (c). All rights reserved.
- */
-
 public class UserData {
     public static Options options = new Options();
     private String login;
