@@ -1,3 +1,4 @@
+package usersdata;
 
 public enum Roles {
     READ,

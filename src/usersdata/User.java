@@ -1,3 +1,4 @@
+package usersdata;
 
 public class User {
     private Long id;
@@ -13,7 +14,7 @@ public class User {
         this.salt = salt;
     }
 
-    String getSalt() {
+    public String getSalt() {
         return salt;
     }
 
@@ -25,7 +26,7 @@ public class User {
         this.id = id;
     }
 
-    String getLogin() {
+    public String getLogin() {
         return login;
     }
 
@@ -41,7 +42,7 @@ public class User {
         this.salt = salt;
     }
 
-    String getPassword() {
+    public String getPassword() {
         return password;
     }
 

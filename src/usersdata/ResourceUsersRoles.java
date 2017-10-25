@@ -1,3 +1,4 @@
+package usersdata;
 
 public class ResourceUsersRoles {
     private Long id;
@@ -20,7 +21,7 @@ public class ResourceUsersRoles {
         this.id = id;
     }
 
-    Long getUser_id() {
+    public Long getUser_id() {
         return user_id;
     }
 
@@ -36,11 +37,11 @@ public class ResourceUsersRoles {
         this.path = path;
     }
 
-    Roles getRole() {
-        return role;
+    public String getRole() {
+        return role.toString();
     }
 
-    String getPath() {
+    public String getPath() {
         return path;
     }
 

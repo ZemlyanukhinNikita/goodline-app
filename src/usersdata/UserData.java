@@ -1,3 +1,5 @@
+package usersdata;
+
 import org.apache.commons.cli.*;
 
 public class UserData {
@@ -23,15 +25,15 @@ public class UserData {
         options.addOption("h", false, "Help information");
     }
 
-    boolean isAuthentication() {
+    public boolean isAuthentication() {
         return cmd.hasOption("l") && cmd.hasOption("p");
     }
 
-    boolean isAuthorization() {
+    public boolean isAuthorization() {
         return isAuthentication() && cmd.hasOption("r") && cmd.hasOption("pt");
     }
 
-    boolean isAccounts() {
+    public boolean isAccounts() {
         return (isAuthorization() && cmd.hasOption("ds") && cmd.hasOption("de") && cmd.hasOption("v"));
     }
 
@@ -44,32 +46,28 @@ public class UserData {
         formatter.printHelp("Main", options);
     }
 
-    void cliParser(String[] args) {
-        try {
-            cmd = parser.parse(options, args);
+    public void cliParser(String[] args) throws ParseException {
+        cmd = parser.parse(options, args);
 
-            if (isAuthentication()) {
-                setLogin(cmd.getOptionValue("l"));
-                setPassword(cmd.getOptionValue("p"));
-            }
+        if (isAuthentication()) {
+            setLogin(cmd.getOptionValue("l"));
+            setPassword(cmd.getOptionValue("p"));
+        }
 
-            if (isAuthorization()) {
-                setRole(cmd.getOptionValue("r"));
-                setPath(cmd.getOptionValue("pt"));
-            }
+        if (isAuthorization()) {
+            setRole(cmd.getOptionValue("r"));
+            setPath(cmd.getOptionValue("pt"));
+        }
 
-            if (isAccounts()) {
-                setDs(cmd.getOptionValue("ds"));
-                setDe(cmd.getOptionValue("de"));
-                setVolume(cmd.getOptionValue("v"));
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (isAccounts()) {
+            setDs(cmd.getOptionValue("ds"));
+            setDe(cmd.getOptionValue("de"));
+            setVolume(cmd.getOptionValue("v"));
         }
 
     }
 
-    String getLogin() {
+    public String getLogin() {
         return login;
     }
 
@@ -77,7 +75,7 @@ public class UserData {
         this.login = login;
     }
 
-    String getPassword() {
+    public String getPassword() {
         return password;
     }
 
@@ -85,7 +83,7 @@ public class UserData {
         this.password = password;
     }
 
-    String getRole() {
+    public String getRole() {
         return role;
     }
 
@@ -93,7 +91,7 @@ public class UserData {
         this.role = role;
     }
 
-    String getPath() {
+    public String getPath() {
         return path;
     }
 
@@ -101,7 +99,7 @@ public class UserData {
         this.path = path;
     }
 
-    String getDs() {
+    public String getDs() {
         return ds;
     }
 
@@ -117,7 +115,7 @@ public class UserData {
         this.de = de;
     }
 
-    String getVolume() {
+    public String getVolume() {
         return volume;
     }
 
