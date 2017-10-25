@@ -8,8 +8,8 @@ public class UserData {
     private String password;
     private String role;
     private String path;
-    private String ds;
-    private String de;
+    private String dataStart;
+    private String dataEnd;
     private String volume;
     private static CommandLine cmd;
     private static CommandLineParser parser = new DefaultParser();
@@ -25,20 +25,21 @@ public class UserData {
         options.addOption("h", false, "Help information");
     }
 
-    public boolean isAuthentication() {
-        return cmd.hasOption("l") && cmd.hasOption("p");
+    public boolean isAuthenticated() {
+        return (cmd.hasOption("l") && cmd.hasOption("p"));
     }
 
-    public boolean isAuthorization() {
-        return isAuthentication() && cmd.hasOption("r") && cmd.hasOption("pt");
+    public boolean isAuthorized() {
+        return (isAuthenticated() && cmd.hasOption("r") && cmd.hasOption("pt"));
     }
 
-    public boolean isAccounts() {
-        return (isAuthorization() && cmd.hasOption("ds") && cmd.hasOption("de") && cmd.hasOption("v"));
+    public boolean isAccounted() {
+        return (isAuthorized() && cmd.hasOption("ds")
+                && cmd.hasOption("de") && cmd.hasOption("v"));
     }
 
     public boolean isHelp() {
-        return !isAuthentication() || cmd.hasOption("h");
+        return (!isAuthenticated() || cmd.hasOption("h"));
     }
 
     public static void help() {
@@ -46,20 +47,20 @@ public class UserData {
         formatter.printHelp("Main", options);
     }
 
-    public void cliParser(String[] args) throws ParseException {
+    public void cliParse(String[] args) throws ParseException {
         cmd = parser.parse(options, args);
 
-        if (isAuthentication()) {
+        if (isAuthenticated()) {
             setLogin(cmd.getOptionValue("l"));
             setPassword(cmd.getOptionValue("p"));
         }
 
-        if (isAuthorization()) {
+        if (isAuthorized()) {
             setRole(cmd.getOptionValue("r"));
             setPath(cmd.getOptionValue("pt"));
         }
 
-        if (isAccounts()) {
+        if (isAccounted()) {
             setDs(cmd.getOptionValue("ds"));
             setDe(cmd.getOptionValue("de"));
             setVolume(cmd.getOptionValue("v"));
@@ -100,19 +101,19 @@ public class UserData {
     }
 
     public String getDs() {
-        return ds;
+        return dataStart;
     }
 
     private void setDs(String ds) {
-        this.ds = ds;
+        this.dataStart = ds;
     }
 
     public String getDe() {
-        return de;
+        return dataEnd;
     }
 
     private void setDe(String de) {
-        this.de = de;
+        this.dataEnd = de;
     }
 
     public String getVolume() {

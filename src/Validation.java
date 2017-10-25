@@ -7,6 +7,7 @@ import static java.lang.Integer.parseInt;
 class Validation {
     static boolean isValidRole(String role) {
         for (Roles r : Roles.values()) {
+
             if (r.name().equals(role)) {
                 return true;
             }
@@ -32,16 +33,16 @@ class Validation {
         return true;
     }
 
-    static boolean isCorrectPath(String argPath, String path) {
-        String[] Arg = argPath.split("\\.");
-        String[] Pth = path.split("\\.");
+    static boolean isCorrectPath(String inputPath, String path) {
+        String[] inputArg = inputPath.split("\\.");
+        String[] pth = path.split("\\.");
 
-        if (Arg.length < Pth.length) {
+        if (inputArg.length < pth.length) {
             return false;
         } else {
-            for (int i = 0; i < Pth.length; i++) {
+            for (int i = 0; i < pth.length; i++) {
 
-                if (!Arg[i].equals(Pth[i])) {
+                if (!inputArg[i].equals(pth[i])) {
                     return false;
                 }
             }

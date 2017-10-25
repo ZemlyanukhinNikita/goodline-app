@@ -13,15 +13,16 @@ import static java.lang.Integer.toHexString;
 
 public class Main {
     private static boolean isRightHashPassword(String pass, String userPass, String salt) {
-        return Hash.getHash(Hash.getHash(pass + salt)).equals(Hash.getHash(Hash.getHash(userPass + salt)));
+        return (Hash.getHash(Hash.getHash(pass + salt))
+                .equals(Hash.getHash(Hash.getHash(userPass + salt))));
     }
 
-    private static void authenticate(String log, String pass, ArrayList<User> Users) {
+    private static void authenticate(String login, String pass, ArrayList<User> Users) {
         //По коллеции User сравниваем логин и пароль с командной строки с логином и паролем пользователя из коллекции
         boolean isRightLogin = false;
         for (User User : Users) {
 
-            if (log.equals(User.getLogin())) {
+            if (login.equals(User.getLogin())) {
                 isRightLogin = true;
 
                 if (!isRightHashPassword(pass, User.getPassword(), User.getSalt())) {
@@ -29,7 +30,8 @@ public class Main {
                 }
             }
 
-            if ((log.equals(User.getLogin()) && (isRightHashPassword(pass, User.getPassword(), User.getSalt())))) {
+            if ((login.equals(User.getLogin()))
+                    && (isRightHashPassword(pass, User.getPassword(), User.getSalt()))) {
                 break;
             }
         }
@@ -39,7 +41,8 @@ public class Main {
         }
     }
 
-    private static void authorize(String log, String role, String resource, ArrayList<User> Users, ArrayList<ResourceUsersRoles> ResUserRoles) {
+    private static void authorize(String log, String role, String resource,
+                                  ArrayList<User> Users, ArrayList<ResourceUsersRoles> ResUserRoles) {
         //Проверка валидности роли
         if (!Validation.isValidRole(role)) {
             System.exit(3);
@@ -49,8 +52,10 @@ public class Main {
         for (User User : Users) {
             for (ResourceUsersRoles ResUserRole : ResUserRoles) {
 
-                if ((log.equals(User.getLogin())) && User.getId().equals(ResUserRole.getUser_id())
-                        && role.equals(ResUserRole.getRole()) && Validation.isCorrectPath(resource, ResUserRole.getPath())) {
+                if ((log.equals(User.getLogin()))
+                        && (User.getId().equals(ResUserRole.getUser_id()))
+                        && (role.equals(ResUserRole.getRole()))
+                        && (Validation.isCorrectPath(resource, ResUserRole.getPath()))) {
                     isRightResource = true;
                 }
             }
@@ -63,13 +68,13 @@ public class Main {
 
     private static void account(String sd, String ed, String vol) {
 
-        if ((!Validation.isValidVolume(vol)) || !Validation.isValidDate(sd) || !Validation.isValidDate(ed)) {
+        if ((!Validation.isValidVolume(vol)) || !Validation.isValidDate(sd)
+                || !Validation.isValidDate(ed)) {
             System.exit(5);
         }
     }
 
     public static void main(String[] args) throws ParseException {
-
         ArrayList<User> Users = new ArrayList<>();
         Users.add(new User((long) 1, "Vasya", "qwerty", Hash.getSalt()));
         Users.add(new User((long) 2, "Vasya123", "123", Hash.getSalt()));
@@ -82,21 +87,21 @@ public class Main {
         ResUserRoles.add(new ResourceUsersRoles((long) 5, (long) 2, Roles.EXECUTE, "DDD"));
 
         UserData userData = new UserData();
-        userData.cliParser(args);
+        userData.cliParse(args);
 
         if (userData.isHelp()) {
             UserData.help();
         }
 
-        if (userData.isAuthentication()) {
+        if (userData.isAuthenticated()) {
             authenticate(userData.getLogin(), userData.getPassword(), Users);
         }
 
-        if (userData.isAuthorization()) {
+        if (userData.isAuthorized()) {
             authorize(userData.getLogin(), userData.getRole(), userData.getPath(), Users, ResUserRoles);
         }
 
-        if (userData.isAccounts()) {
+        if (userData.isAccounted()) {
             account(userData.getDs(), userData.getDe(), userData.getVolume());
         }
     }
@@ -108,11 +113,11 @@ public class Main {
             //Создаем строку в которую запишем хешированный пароль
             StringBuilder hexString = new StringBuilder();
             try {
-                //Возвращает объект MessageDigest, который реализует указанный алгоритм md5
+                //Возвращаем объект MessageDigest, который реализует указанный алгоритм md5
                 md5 = MessageDigest.getInstance("md5");
-                //Сбрасывает дайджест для дальнейшего использования
+                //Сбрасываем дайджест для дальнейшего использования
                 md5.reset();
-                //Обновляет дайджест, используя указанный массив байтов
+                //Обновляем дайджест, используя указанный массив байтов
                 md5.update(source.getBytes());
                 //Записываем в messageDigest[] массив байтов полученного хеш значения
                 byte messageDigest[] = md5.digest();
