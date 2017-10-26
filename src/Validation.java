@@ -1,19 +1,8 @@
-import usersdata.Roles;
-
 import java.time.LocalDate;
 
 import static java.lang.Integer.parseInt;
 
 class Validation {
-    static boolean isValidRole(String role) {
-        for (Roles r : Roles.values()) {
-
-            if (r.name().equals(role)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     static boolean isValidVolume(String v) {
         try {
@@ -41,7 +30,6 @@ class Validation {
             return false;
         } else {
             for (int i = 0; i < pth.length; i++) {
-
                 if (!inputArg[i].equals(pth[i])) {
                     return false;
                 }

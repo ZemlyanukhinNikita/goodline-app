@@ -1,8 +1,5 @@
 import org.apache.commons.cli.ParseException;
-import usersdata.ResourceUsersRoles;
-import usersdata.Roles;
-import usersdata.User;
-import usersdata.UserData;
+import usersdata.*;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -21,18 +18,12 @@ public class Main {
         //По коллеции User сравниваем логин и пароль с командной строки с логином и паролем пользователя из коллекции
         boolean isRightLogin = false;
         for (User user : users) {
-
             if (login.equals(user.getLogin())) {
                 isRightLogin = true;
 
                 if (!isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
                     System.exit(2);
                 }
-            }
-
-            if ((login.equals(user.getLogin()))
-                    && (isRightHashPassword(pass, user.getPassword(), user.getSalt()))) {
-                break;
             }
         }
 
@@ -44,19 +35,19 @@ public class Main {
     private static void authorize(String log, String role, String resource,
                                   ArrayList<User> users, ArrayList<ResourceUsersRoles> resourceUsersRoles) {
         //Проверка валидности роли
-        if (!Validation.isValidRole(role)) {
+        if (!Roles.isValidRole(role)) {
             System.exit(3);
         }
         //По коллекции User и ResourceUserRoles сравниваем логин, ID пользователя, роль и проверяем на дочерний ресурс
         boolean isRightResource = false;
         for (User user : users) {
             for (ResourceUsersRoles resUserRole : resourceUsersRoles) {
-
                 if ((log.equals(user.getLogin()))
                         && (user.getId().equals(resUserRole.getUserId()))
                         && (role.equals(resUserRole.getRole()))
                         && (Validation.isCorrectPath(resource, resUserRole.getPath()))) {
                     isRightResource = true;
+                    break;
                 }
             }
         }
@@ -66,10 +57,10 @@ public class Main {
         }
     }
 
-    private static void account(String sd, String ed, String vol) {
+    private static void account(String dateStart, String dateEnd, String volume) {
 
-        if ((!Validation.isValidVolume(vol)) || !Validation.isValidDate(sd)
-                || !Validation.isValidDate(ed)) {
+        if ((!Validation.isValidVolume(volume)) || (!Validation.isValidDate(dateStart))
+                || (!Validation.isValidDate(dateEnd))) {
             System.exit(5);
         }
     }
@@ -80,29 +71,30 @@ public class Main {
         users.add(new User((long) 2, "Vasya123", "123", Hash.getSalt()));
 
         ArrayList<ResourceUsersRoles> resourceUsersRoles = new ArrayList<>();
-        resourceUsersRoles.add(new ResourceUsersRoles((long) 1, (long) 1, Roles.READ, "A.B"));
-        resourceUsersRoles.add(new ResourceUsersRoles((long) 2, (long) 1, Roles.READ, "H.I.J"));
-        resourceUsersRoles.add(new ResourceUsersRoles((long) 3, (long) 1, Roles.WRITE, "H.I.J"));
-        resourceUsersRoles.add(new ResourceUsersRoles((long) 4, (long) 2, Roles.EXECUTE, "H.I.J"));
-        resourceUsersRoles.add(new ResourceUsersRoles((long) 5, (long) 2, Roles.EXECUTE, "DDD"));
+        resourceUsersRoles.add(new ResourceUsersRoles(1L, 1L, Roles.READ, "A.B"));
+        resourceUsersRoles.add(new ResourceUsersRoles(2L, 1L, Roles.READ, "H.I.J"));
+        resourceUsersRoles.add(new ResourceUsersRoles(3L, 1L, Roles.WRITE, "H.I.J"));
+        resourceUsersRoles.add(new ResourceUsersRoles(4L, 2L, Roles.EXECUTE, "H.I.J"));
+        resourceUsersRoles.add(new ResourceUsersRoles(5L, 2L, Roles.EXECUTE, "DDD"));
 
-        UserData userData = new UserData();
-        userData.cliParse(args);
+        //UserData userData = new UserData();
+        CmdParser cmdParser = new CmdParser();
+        UserData userData = cmdParser.cliParse(args);
 
-        if (userData.isHelp()) {
-            UserData.help();
+        if (cmdParser.isHelp()) {
+            CmdParser.help();
         }
 
-        if (userData.isAuthenticated()) {
+        if (cmdParser.isAuthenticated()) {
             authenticate(userData.getLogin(), userData.getPassword(), users);
         }
 
-        if (userData.isAuthorized()) {
+        if (cmdParser.isAuthorized()) {
             authorize(userData.getLogin(), userData.getRole(), userData.getPath(), users, resourceUsersRoles);
         }
 
-        if (userData.isAccounted()) {
-            account(userData.getDs(), userData.getDe(), userData.getVolume());
+        if (cmdParser.isAccounted()) {
+            account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume());
         }
     }
 
@@ -126,7 +118,7 @@ public class Main {
                     hexString.append(toHexString(0xFF & aMessageDigest));
                 }
             } catch (NoSuchAlgorithmException e) {
-                return "";
+                return null;
             }
             return hexString.toString();
         }
