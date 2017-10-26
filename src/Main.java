@@ -20,18 +20,18 @@ public class Main {
     private static void authenticate(String login, String pass, ArrayList<User> users) {
         //По коллеции User сравниваем логин и пароль с командной строки с логином и паролем пользователя из коллекции
         boolean isRightLogin = false;
-        for (User User : users) {
+        for (User user : users) {
 
-            if (login.equals(User.getLogin())) {
+            if (login.equals(user.getLogin())) {
                 isRightLogin = true;
 
-                if (!isRightHashPassword(pass, User.getPassword(), User.getSalt())) {
+                if (!isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
                     System.exit(2);
                 }
             }
 
-            if ((login.equals(User.getLogin()))
-                    && (isRightHashPassword(pass, User.getPassword(), User.getSalt()))) {
+            if ((login.equals(user.getLogin()))
+                    && (isRightHashPassword(pass, user.getPassword(), user.getSalt()))) {
                 break;
             }
         }
@@ -49,13 +49,13 @@ public class Main {
         }
         //По коллекции User и ResourceUserRoles сравниваем логин, ID пользователя, роль и проверяем на дочерний ресурс
         boolean isRightResource = false;
-        for (User User : users) {
-            for (ResourceUsersRoles ResUserRole : resourceUsersRoles) {
+        for (User user : users) {
+            for (ResourceUsersRoles resUserRole : resourceUsersRoles) {
 
-                if ((log.equals(User.getLogin()))
-                        && (User.getId().equals(ResUserRole.getUserId()))
-                        && (role.equals(ResUserRole.getRole()))
-                        && (Validation.isCorrectPath(resource, ResUserRole.getPath()))) {
+                if ((log.equals(user.getLogin()))
+                        && (user.getId().equals(resUserRole.getUserId()))
+                        && (role.equals(resUserRole.getRole()))
+                        && (Validation.isCorrectPath(resource, resUserRole.getPath()))) {
                     isRightResource = true;
                 }
             }
