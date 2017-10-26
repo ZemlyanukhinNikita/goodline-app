@@ -21,11 +21,11 @@ public class ResourceUsersRoles {
         this.id = id;
     }
 
-    public Long getUser_id() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUser_id(Long user_id) {
+    public void setUserId(Long user_id) {
         this.userId = user_id;
     }
 

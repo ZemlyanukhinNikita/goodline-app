@@ -17,10 +17,10 @@ public class Main {
                 .equals(Hash.getHash(Hash.getHash(userPass + salt))));
     }
 
-    private static void authenticate(String login, String pass, ArrayList<User> Users) {
+    private static void authenticate(String login, String pass, ArrayList<User> users) {
         //По коллеции User сравниваем логин и пароль с командной строки с логином и паролем пользователя из коллекции
         boolean isRightLogin = false;
-        for (User User : Users) {
+        for (User User : users) {
 
             if (login.equals(User.getLogin())) {
                 isRightLogin = true;
@@ -42,18 +42,18 @@ public class Main {
     }
 
     private static void authorize(String log, String role, String resource,
-                                  ArrayList<User> Users, ArrayList<ResourceUsersRoles> ResUserRoles) {
+                                  ArrayList<User> users, ArrayList<ResourceUsersRoles> resourceUsersRoles) {
         //Проверка валидности роли
         if (!Validation.isValidRole(role)) {
             System.exit(3);
         }
         //По коллекции User и ResourceUserRoles сравниваем логин, ID пользователя, роль и проверяем на дочерний ресурс
         boolean isRightResource = false;
-        for (User User : Users) {
-            for (ResourceUsersRoles ResUserRole : ResUserRoles) {
+        for (User User : users) {
+            for (ResourceUsersRoles ResUserRole : resourceUsersRoles) {
 
                 if ((log.equals(User.getLogin()))
-                        && (User.getId().equals(ResUserRole.getUser_id()))
+                        && (User.getId().equals(ResUserRole.getUserId()))
                         && (role.equals(ResUserRole.getRole()))
                         && (Validation.isCorrectPath(resource, ResUserRole.getPath()))) {
                     isRightResource = true;
