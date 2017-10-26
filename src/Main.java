@@ -75,16 +75,16 @@ public class Main {
     }
 
     public static void main(String[] args) throws ParseException {
-        ArrayList<User> Users = new ArrayList<>();
-        Users.add(new User((long) 1, "Vasya", "qwerty", Hash.getSalt()));
-        Users.add(new User((long) 2, "Vasya123", "123", Hash.getSalt()));
+        ArrayList<User> users = new ArrayList<>();
+        users.add(new User((long) 1, "Vasya", "qwerty", Hash.getSalt()));
+        users.add(new User((long) 2, "Vasya123", "123", Hash.getSalt()));
 
-        ArrayList<ResourceUsersRoles> ResUserRoles = new ArrayList<>();
-        ResUserRoles.add(new ResourceUsersRoles((long) 1, (long) 1, Roles.READ, "A.B"));
-        ResUserRoles.add(new ResourceUsersRoles((long) 2, (long) 1, Roles.READ, "H.I.J"));
-        ResUserRoles.add(new ResourceUsersRoles((long) 3, (long) 1, Roles.WRITE, "H.I.J"));
-        ResUserRoles.add(new ResourceUsersRoles((long) 4, (long) 2, Roles.EXECUTE, "H.I.J"));
-        ResUserRoles.add(new ResourceUsersRoles((long) 5, (long) 2, Roles.EXECUTE, "DDD"));
+        ArrayList<ResourceUsersRoles> resourceUsersRoles = new ArrayList<>();
+        resourceUsersRoles.add(new ResourceUsersRoles((long) 1, (long) 1, Roles.READ, "A.B"));
+        resourceUsersRoles.add(new ResourceUsersRoles((long) 2, (long) 1, Roles.READ, "H.I.J"));
+        resourceUsersRoles.add(new ResourceUsersRoles((long) 3, (long) 1, Roles.WRITE, "H.I.J"));
+        resourceUsersRoles.add(new ResourceUsersRoles((long) 4, (long) 2, Roles.EXECUTE, "H.I.J"));
+        resourceUsersRoles.add(new ResourceUsersRoles((long) 5, (long) 2, Roles.EXECUTE, "DDD"));
 
         UserData userData = new UserData();
         userData.cliParse(args);
@@ -94,11 +94,11 @@ public class Main {
         }
 
         if (userData.isAuthenticated()) {
-            authenticate(userData.getLogin(), userData.getPassword(), Users);
+            authenticate(userData.getLogin(), userData.getPassword(), users);
         }
 
         if (userData.isAuthorized()) {
-            authorize(userData.getLogin(), userData.getRole(), userData.getPath(), Users, ResUserRoles);
+            authorize(userData.getLogin(), userData.getRole(), userData.getPath(), users, resourceUsersRoles);
         }
 
         if (userData.isAccounted()) {

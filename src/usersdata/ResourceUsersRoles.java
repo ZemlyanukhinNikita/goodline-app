@@ -2,13 +2,13 @@ package usersdata;
 
 public class ResourceUsersRoles {
     private Long id;
-    private Long user_id;
+    private Long userId;
     private Roles role;
     private String path;
 
-    public ResourceUsersRoles(Long id, Long user_id, Roles role, String path) {
+    public ResourceUsersRoles(Long id, Long userId, Roles role, String path) {
         this.id = id;
-        this.user_id = user_id;
+        this.userId = userId;
         this.role = role;
         this.path = path;
     }
@@ -22,11 +22,11 @@ public class ResourceUsersRoles {
     }
 
     public Long getUser_id() {
-        return user_id;
+        return userId;
     }
 
     public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+        this.userId = user_id;
     }
 
     public void setRole(Roles role) {
