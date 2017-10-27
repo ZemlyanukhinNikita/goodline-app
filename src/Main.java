@@ -20,19 +20,19 @@ public class Main {
         CmdParser cmdParser = new CmdParser();
         UserData userData = cmdParser.cliParse(args);
 
-        if (cmdParser.isHelp()) {
+        if (Validation.isHelp()) {
             CmdParser.help();
         }
 
-        if (cmdParser.isAuthenticated()) {
+        if (Validation.isAuthenticated()) {
             Aaa.authenticate(userData.getLogin(), userData.getPassword(), users);
         }
 
-        if (cmdParser.isAuthorized()) {
+        if (Validation.isAuthorized()) {
             Aaa.authorize(userData.getLogin(), userData.getRole(), userData.getPath(), users, resourceUsersRoles);
         }
 
-        if (cmdParser.isAccounted()) {
+        if (Validation.isAccounted()) {
             Aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume());
         }
     }

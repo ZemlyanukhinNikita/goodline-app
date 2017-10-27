@@ -4,7 +4,7 @@ import org.apache.commons.cli.*;
 
 public class CmdParser {
     public static Options options = new Options();
-    private static CommandLine cmd;
+    static CommandLine cmd;
     private static CommandLineParser parser = new DefaultParser();
 
     public CmdParser() {
@@ -16,23 +16,6 @@ public class CmdParser {
         options.addOption("de", true, "Data end");
         options.addOption("v", true, "User volume");
         options.addOption("h", false, "Help information");
-    }
-
-    public boolean isAuthenticated() {
-        return (cmd.hasOption("l") && cmd.hasOption("p"));
-    }
-
-    public boolean isAuthorized() {
-        return (isAuthenticated() && cmd.hasOption("r") && cmd.hasOption("pt"));
-    }
-
-    public boolean isAccounted() {
-        return (isAuthorized() && cmd.hasOption("ds")
-                && cmd.hasOption("de") && cmd.hasOption("v"));
-    }
-
-    public boolean isHelp() {
-        return (!isAuthenticated() || cmd.hasOption("h"));
     }
 
     public static void help() {
