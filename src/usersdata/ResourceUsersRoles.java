@@ -37,8 +37,12 @@ public class ResourceUsersRoles {
         this.path = path;
     }
 
-    String getRole() {
-        return role.toString();
+    Roles getRole() {
+        return role;
+    }
+
+    String getRoleName() {
+        return role.name();
     }
 
     String getPath() {

@@ -33,7 +33,7 @@ public class Aaa {
             for (ResourceUsersRoles resUserRole : resourceUsersRoles) {
                 if ((log.equals(user.getLogin()))
                         && (user.getId().equals(resUserRole.getUserId()))
-                        && (role.equals(resUserRole.getRole()))
+                        && (role.equals(resUserRole.getRoleName()))
                         && (Validation.isCorrectPath(resource, resUserRole.getPath()))) {
                     isRightResource = true;
                     break;
