@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class Main {
 
-
     public static void main(String[] args) throws ParseException {
         ArrayList<User> users = new ArrayList<>();
         users.add(new User((long) 1, "Vasya", "qwerty", Hash.getSalt()));
@@ -18,7 +17,6 @@ public class Main {
         resourceUsersRoles.add(new ResourceUsersRoles(4L, 2L, Roles.EXECUTE, "H.I.J"));
         resourceUsersRoles.add(new ResourceUsersRoles(5L, 2L, Roles.EXECUTE, "DDD"));
 
-        //UserData userData = new UserData();
         CmdParser cmdParser = new CmdParser();
         UserData userData = cmdParser.cliParse(args);
 

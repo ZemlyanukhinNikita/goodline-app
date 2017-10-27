@@ -21,7 +21,7 @@ public class ResourceUsersRoles {
         this.id = id;
     }
 
-    public Long getUserId() {
+    Long getUserId() {
         return userId;
     }
 
@@ -37,12 +37,11 @@ public class ResourceUsersRoles {
         this.path = path;
     }
 
-    public String getRole() {
+    String getRole() {
         return role.toString();
     }
 
-    public String getPath() {
+    String getPath() {
         return path;
     }
-
 }

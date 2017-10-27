@@ -7,7 +7,7 @@ import java.security.SecureRandom;
 import static java.lang.Integer.toHexString;
 
 public class Hash {
-    public static String getHash(String source) {
+    private static String getHash(String source) {
         //Создаем экземпляр класса
         MessageDigest md5;
         //Создаем строку в которую запишем хешированный пароль
@@ -50,8 +50,11 @@ public class Hash {
         return s;
     }
 
-    public static boolean isRightHashPassword(String pass, String userPass, String salt) {
-        return (Hash.getHash(Hash.getHash(pass + salt))
-                .equals(Hash.getHash(Hash.getHash(userPass + salt))));
+    static boolean isRightHashPassword(String pass, String userPass, String salt) {
+        return getDoubleHash(pass, salt).equals(getDoubleHash(userPass, salt));
+    }
+
+    private static String getDoubleHash(String pass, String salt) {
+        return getHash(getHash(pass + salt));
     }
 }
