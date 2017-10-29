@@ -1,5 +1,11 @@
+import domain.ResourceUsersRoles;
+import domain.Roles;
+import domain.User;
 import org.apache.commons.cli.ParseException;
-import usersdata.*;
+import service.Aaa;
+import service.CmdParser;
+import service.Hash;
+import service.UserData;
 
 import java.util.ArrayList;
 
@@ -20,19 +26,19 @@ public class Main {
         CmdParser cmdParser = new CmdParser();
         UserData userData = cmdParser.cliParse(args);
 
-        if (Validation.isHelp()) {
-            CmdParser.help();
+        if (UserData.isHelp()) {
+            CmdParser.printHelp();
         }
 
-        if (Validation.isAuthenticated()) {
+        if (UserData.isAuthenticated()) {
             Aaa.authenticate(userData.getLogin(), userData.getPassword(), users);
         }
 
-        if (Validation.isAuthorized()) {
+        if (UserData.isAuthorized()) {
             Aaa.authorize(userData.getLogin(), userData.getRole(), userData.getPath(), users, resourceUsersRoles);
         }
 
-        if (Validation.isAccounted()) {
+        if (UserData.isAccounted()) {
             Aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume());
         }
     }

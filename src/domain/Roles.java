@@ -1,4 +1,4 @@
-package usersdata;
+package domain;
 
 public enum Roles {
     READ,

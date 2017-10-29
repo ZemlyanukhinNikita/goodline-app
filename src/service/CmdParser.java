@@ -1,4 +1,4 @@
-package usersdata;
+package service;
 
 import org.apache.commons.cli.*;
 
@@ -18,7 +18,7 @@ public class CmdParser {
         options.addOption("h", false, "Help information");
     }
 
-    public static void help() {
+    public static void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("Main", options);
     }

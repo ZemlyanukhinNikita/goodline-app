@@ -1,4 +1,8 @@
-package usersdata;
+package service;
+
+import domain.ResourceUsersRoles;
+import domain.Roles;
+import domain.User;
 
 import java.util.ArrayList;
 
@@ -7,12 +11,14 @@ public class Aaa {
         //По коллеции User сравниваем логин и пароль с командной строки с логином и паролем пользователя из коллекции
         boolean isRightLogin = false;
         for (User user : users) {
+            if (login.equals(user.getLogin())
+                    && !Hash.isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
+                System.exit(2);
+            }
+
             if (login.equals(user.getLogin())) {
                 isRightLogin = true;
-
-                if (!Hash.isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
-                    System.exit(2);
-                }
+                break;
             }
         }
 

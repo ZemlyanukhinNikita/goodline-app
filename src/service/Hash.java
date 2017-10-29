@@ -1,4 +1,4 @@
-package usersdata;
+package service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -21,7 +21,11 @@ public class Hash {
             md5.update(source.getBytes());
             //Записываем в messageDigest[] массив байтов полученного хеш значения
             byte messageDigest[] = md5.digest();
-            //Конвертируем байты в 16-й формат и записываем в строку
+            /*Конвертируем байты в 16-й формат и записываем в строку
+            Сначала возвращаем строковое представление целочисленного аргумента,
+            как целое число без знака в 16-й системе методом toHexString().
+            Далее в нашу строчку hexString добавляем полученную методом append().
+            */
             for (byte aMessageDigest : messageDigest) {
                 hexString.append(toHexString(0xFF & aMessageDigest));
             }
@@ -55,6 +59,6 @@ public class Hash {
     }
 
     private static String getDoubleHash(String pass, String salt) {
-        return getHash(getHash(pass + salt));
+        return getHash(getHash(pass) + salt);
     }
 }

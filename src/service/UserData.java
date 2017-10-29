@@ -1,4 +1,4 @@
-package usersdata;
+package service;
 
 public class UserData {
     private String login;
@@ -8,6 +8,23 @@ public class UserData {
     private String dateStart;
     private String dateEnd;
     private String volume;
+
+    public static boolean isAuthenticated() {
+        return (CmdParser.cmd.hasOption("l") && CmdParser.cmd.hasOption("p"));
+    }
+
+    public static boolean isAuthorized() {
+        return (isAuthenticated() && CmdParser.cmd.hasOption("r") && CmdParser.cmd.hasOption("pt"));
+    }
+
+    public static boolean isHelp() {
+        return (!isAuthenticated() || CmdParser.cmd.hasOption("h"));
+    }
+
+    public static boolean isAccounted() {
+        return (isAuthorized() && CmdParser.cmd.hasOption("ds")
+                && CmdParser.cmd.hasOption("de") && CmdParser.cmd.hasOption("v"));
+    }
 
     public String getLogin() {
         return login;

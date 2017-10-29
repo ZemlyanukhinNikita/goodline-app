@@ -1,4 +1,4 @@
-package usersdata;
+package domain;
 
 public class ResourceUsersRoles {
     private Long id;
@@ -21,7 +21,7 @@ public class ResourceUsersRoles {
         this.id = id;
     }
 
-    Long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
@@ -41,11 +41,11 @@ public class ResourceUsersRoles {
         return role;
     }
 
-    String getRoleName() {
+    public String getRoleName() {
         return role.name();
     }
 
-    String getPath() {
+    public String getPath() {
         return path;
     }
 }

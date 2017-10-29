@@ -1,4 +1,4 @@
-package usersdata;
+package service;
 
 import java.time.LocalDate;
 
@@ -40,20 +40,4 @@ public class Validation {
         return true;
     }
 
-    public static boolean isAuthenticated() {
-        return (CmdParser.cmd.hasOption("l") && CmdParser.cmd.hasOption("p"));
-    }
-
-    public static boolean isAuthorized() {
-        return (isAuthenticated() && CmdParser.cmd.hasOption("r") && CmdParser.cmd.hasOption("pt"));
-    }
-
-    public static boolean isHelp() {
-        return (!isAuthenticated() || CmdParser.cmd.hasOption("h"));
-    }
-
-    public static boolean isAccounted() {
-        return (isAuthorized() && CmdParser.cmd.hasOption("ds")
-                && CmdParser.cmd.hasOption("de") && CmdParser.cmd.hasOption("v"));
-    }
 }
