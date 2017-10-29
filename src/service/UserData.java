@@ -9,21 +9,17 @@ public class UserData {
     private String dateEnd;
     private String volume;
 
-    public static boolean isAuthenticated() {
-        return (CmdParser.cmd.hasOption("l") && CmdParser.cmd.hasOption("p"));
+    public boolean isAuthenticated() {
+        return ((this.login != null) && (this.password != null));
     }
 
-    public static boolean isAuthorized() {
-        return (isAuthenticated() && CmdParser.cmd.hasOption("r") && CmdParser.cmd.hasOption("pt"));
+    public boolean isAuthorized() {
+        return (isAuthenticated() && (this.role != null) && (this.path != null));
     }
 
-    public static boolean isHelp() {
-        return (!isAuthenticated() || CmdParser.cmd.hasOption("h"));
-    }
-
-    public static boolean isAccounted() {
-        return (isAuthorized() && CmdParser.cmd.hasOption("ds")
-                && CmdParser.cmd.hasOption("de") && CmdParser.cmd.hasOption("v"));
+    public boolean isAccounted() {
+        return (isAuthorized() && (this.dateStart != null)
+                && (this.dateEnd != null) && (this.volume != null));
     }
 
     public String getLogin() {

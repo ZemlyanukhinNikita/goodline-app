@@ -4,7 +4,6 @@ import org.apache.commons.cli.*;
 
 public class CmdParser {
     public static Options options = new Options();
-    static CommandLine cmd;
     private static CommandLineParser parser = new DefaultParser();
 
     public CmdParser() {
@@ -24,6 +23,7 @@ public class CmdParser {
     }
 
     public UserData cliParse(String[] args) throws ParseException {
+        CommandLine cmd;
         cmd = parser.parse(options, args);
         UserData userData = new UserData();
         userData.setLogin(cmd.getOptionValue("l"));
@@ -34,6 +34,10 @@ public class CmdParser {
         userData.setDateEnd(cmd.getOptionValue("de"));
         userData.setVolume(cmd.getOptionValue("v"));
 
+        if(cmd.hasOption("h") || !userData.isAuthenticated())
+        {
+            printHelp();
+        }
         return userData;
     }
 }
