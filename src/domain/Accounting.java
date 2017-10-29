@@ -5,6 +5,12 @@ public class Accounting {
     private String dateEnd;
     private String volume;
 
+    public Accounting(String dateStart, String dateEnd, String volume) {
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.volume = volume;
+    }
+
     public String getDateStart() {
         return dateStart;
     }

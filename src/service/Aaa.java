@@ -1,5 +1,6 @@
 package service;
 
+import domain.Accounting;
 import domain.ResourceUsersRoles;
 import domain.Roles;
 import domain.User;
@@ -52,11 +53,14 @@ public class Aaa {
         }
     }
 
-    public static void account(String dateStart, String dateEnd, String volume) {
+    public static void account(String dateStart, String dateEnd, String volume, ArrayList<Accounting> accountings) {
 
         if ((!Validation.isValidVolume(volume)) || (!Validation.isValidDate(dateStart))
                 || (!Validation.isValidDate(dateEnd))) {
             System.exit(5);
+        }
+        else {
+            accountings.add(new Accounting(dateStart,dateEnd,volume));
         }
     }
 }

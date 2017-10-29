@@ -1,3 +1,4 @@
+import domain.Accounting;
 import domain.ResourceUsersRoles;
 import domain.Roles;
 import domain.User;
@@ -23,6 +24,8 @@ public class Main {
         resourceUsersRoles.add(new ResourceUsersRoles(4L, 2L, Roles.EXECUTE, "H.I.J"));
         resourceUsersRoles.add(new ResourceUsersRoles(5L, 2L, Roles.EXECUTE, "DDD"));
 
+        ArrayList<Accounting> accountings = new ArrayList<>();
+
         CmdParser cmdParser = new CmdParser();
         UserData userData = cmdParser.cliParse(args);
 
@@ -35,7 +38,7 @@ public class Main {
         }
 
         if (userData.isAccounted()) {
-            Aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume());
+            Aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume(),accountings);
         }
     }
 }
