@@ -36,8 +36,9 @@ class Validation {
                     return false;
                 }
             }
+            return true;
         }
-        return true;
+
     }
 
 }
