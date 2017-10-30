@@ -10,24 +10,16 @@ import java.util.ArrayList;
 public class Aaa {
     public static void authenticate(String login, String pass, ArrayList<User> users) {
         //По коллеции User сравниваем логин и пароль с командной строки с логином и паролем пользователя из коллекции
-        boolean isRightLogin = false;
         for (User user : users) {
             if (login.equals(user.getLogin())
                     && !Hash.isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
                 System.exit(2);
+            } else if (!login.equals(user.getLogin())
+                    && Hash.isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
+                System.exit(1);
             }
-
-            if (login.equals(user.getLogin())) {
-                isRightLogin = true;
-                break;
-            }
-        }
-
-        if (!isRightLogin) {
-            System.exit(1);
         }
     }
-
     public static void authorize(String login, String role, String resource,
                                  ArrayList<User> users, ArrayList<ResourceUsersRoles> resourceUsersRoles) {
         //Проверка валидности роли
