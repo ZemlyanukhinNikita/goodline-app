@@ -34,10 +34,6 @@ public class CmdParser {
         userData.setDateEnd(cmd.getOptionValue("de"));
         userData.setVolume(cmd.getOptionValue("v"));
 
-        if(cmd.hasOption("h") || !userData.isAuthenticated())
-        {
-            printHelp();
-        }
         return userData;
     }
 }

@@ -10,6 +10,9 @@ import service.UserData;
 
 import java.util.ArrayList;
 
+import static service.CmdParser.options;
+import static service.CmdParser.printHelp;
+
 public class Main {
 
     public static void main(String[] args) throws ParseException {
@@ -39,6 +42,10 @@ public class Main {
 
         if (userData.isAccounted()) {
             Aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume(),accountings);
+        }
+
+        if(options.hasOption("h")){
+            printHelp();
         }
     }
 }
