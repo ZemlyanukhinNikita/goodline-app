@@ -4,24 +4,24 @@ import java.time.LocalDate;
 
 import static java.lang.Integer.parseInt;
 
-public class Validation {
+class Validation {
 
     static boolean isValidVolume(String v) {
         try {
             parseInt(v);
+            return true;
         } catch (Exception e) {
             return false;
         }
-        return true;
     }
 
     static boolean isValidDate(String d) {
         try {
             LocalDate.parse(d);
+            return true;
         } catch (Exception e) {
             return false;
         }
-        return true;
     }
 
     static boolean isCorrectPath(String inputPath, String path) {

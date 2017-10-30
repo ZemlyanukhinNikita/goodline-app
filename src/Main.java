@@ -44,7 +44,7 @@ public class Main {
             Aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume(),accountings);
         }
 
-        if(options.hasOption("h")){
+        if(options.hasOption("h") && !userData.isAuthenticated() ){
             printHelp();
         }
     }
