@@ -28,7 +28,7 @@ public class Aaa {
         }
     }
 
-    public static void authorize(String log, String role, String resource,
+    public static void authorize(String login, String role, String resource,
                                  ArrayList<User> users, ArrayList<ResourceUsersRoles> resourceUsersRoles) {
         //Проверка валидности роли
         if (!Roles.isValidRole(role)) {
@@ -38,7 +38,7 @@ public class Aaa {
         boolean isRightResource = false;
         for (User user : users) {
             for (ResourceUsersRoles resUserRole : resourceUsersRoles) {
-                if ((log.equals(user.getLogin()))
+                if ((login.equals(user.getLogin()))
                         && (user.getId().equals(resUserRole.getUserId()))
                         && (role.equals(resUserRole.getRoleName()))
                         && (Validation.isCorrectPath(resource, resUserRole.getPath()))) {
