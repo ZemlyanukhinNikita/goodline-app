@@ -25,6 +25,9 @@ public class Hash {
             Сначала возвращаем строковое представление целочисленного аргумента,
             как целое число без знака в 16-й системе методом toHexString().
             Далее в нашу строчку hexString добавляем полученную методом append().
+            Т.к в java byte принимает значения от -128 до 127,
+            этой командой мы убираем знак (0xFF & aMessageDigest). Теперь byte принимает
+            значения от 0 до 255.
             */
             for (byte aMessageDigest : messageDigest) {
                 hexString.append(toHexString(0xFF & aMessageDigest));
@@ -47,6 +50,9 @@ public class Hash {
         Сначала возвращаем строковое представление целочисленного аргумента,
         как целое число без знака в 16-й системе методом toHexString().
         Далее в нашу строчку hexString добавляем полученную методом append().
+        Т.к в java byte принимает значения от -128 до 127,
+        этой командой мы убираем знак (0xFF & aMessageDigest). Теперь byte принимает
+        значения от 0 до 255.
         */
         for (byte aSalt : salt) {
             s = String.valueOf(hexString.append(toHexString(0xFF & aSalt)));
