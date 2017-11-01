@@ -24,14 +24,14 @@ java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya -p qwerty -r READ 
 echo "4" %ERRORLEVEL%
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya -p qwerty -r READ -pt A.GGG
 echo "4" %ERRORLEVEL%
-java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya123 -p 123 -r READ -pt H.I.J
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya123 -p 123 -r READ -pt H.I
 echo "4" %ERRORLEVEL%
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya123 -p 123 -r EXECUTE -pt H.I.J
 echo "0" %ERRORLEVEL%
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya123 -p 123 -r EXECUTE -pt H.I.J.K
 echo "0" %ERRORLEVEL%
-java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya123 -p 123 -r EXECUTE -pt H.I
-echo "4" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya123 -p 123 -r EXECUTE -pt H.I.J
+echo "0" %ERRORLEVEL%
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya -p qwerty -r READ -pt A.B -ds 2017-10-08 -de 2017-10-08 -v 100
 echo "0" %ERRORLEVEL%
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya -p qwerty -r READ -pt A.B -ds 1111111111 -de 2017-10-08 -v 100
@@ -52,4 +52,6 @@ java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya -p qwerty -r WRITE
 echo "4" %ERRORLEVEL%
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya -p qwerty -r WRIRE -pt A.B
 echo "3" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya123 -p 123 -r READ -pt DDD
+echo "0" %ERRORLEVEL%
 PAUSE

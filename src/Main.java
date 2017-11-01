@@ -26,6 +26,7 @@ public class Main {
         resourceUsersRoles.add(new ResourceUsersRoles(3L, 1L, Roles.WRITE, "H.I.J"));
         resourceUsersRoles.add(new ResourceUsersRoles(4L, 2L, Roles.EXECUTE, "H.I.J"));
         resourceUsersRoles.add(new ResourceUsersRoles(5L, 2L, Roles.EXECUTE, "DDD"));
+        resourceUsersRoles.add(new ResourceUsersRoles(5L, 2L, Roles.READ, "DDD"));
 
         ArrayList<Accounting> accountings = new ArrayList<>();
 
@@ -37,14 +38,15 @@ public class Main {
         }
 
         if (userData.isAuthorized()) {
+
             Aaa.authorize(userData.getLogin(), userData.getRole(), userData.getPath(), users, resourceUsersRoles);
         }
 
         if (userData.isAccounted()) {
-            Aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume(),accountings);
+            Aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume(), accountings);
         }
 
-        if(options.hasOption("h") && !userData.isAuthenticated() ){
+        if (options.hasOption("h") && !userData.isAuthenticated()) {
             printHelp();
         }
     }

@@ -4,7 +4,6 @@ import org.apache.commons.cli.*;
 
 public class CmdParser {
     public static Options options = new Options();
-    private static CommandLineParser parser = new DefaultParser();
 
     public CmdParser() {
         options.addOption("l", true, "User login");
@@ -23,6 +22,7 @@ public class CmdParser {
     }
 
     public UserData cliParse(String[] args) throws ParseException {
+        CommandLineParser parser = new DefaultParser();
         CommandLine cmd;
         cmd = parser.parse(options, args);
         UserData userData = new UserData();

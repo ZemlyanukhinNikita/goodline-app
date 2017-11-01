@@ -20,29 +20,19 @@ public class Aaa {
             }
         }
     }
+
     public static void authorize(String login, String role, String resource,
                                  ArrayList<User> users, ArrayList<ResourceUsersRoles> resourceUsersRoles) {
         //Проверка валидности роли
         if (!Roles.isValidRole(role)) {
             System.exit(3);
         }
-        //По коллекции User и ResourceUserRoles сравниваем логин, ID пользователя, роль и проверяем на дочерний ресурс
-        boolean isRightResource = false;
-        for (User user : users) {
-            for (ResourceUsersRoles resUserRole : resourceUsersRoles) {
-                if ((login.equals(user.getLogin()))
-                        && (user.getId().equals(resUserRole.getUserId()))
-                        && (role.equals(resUserRole.getRoleName()))
-                        && (Validation.isCorrectPath(resource, resUserRole.getPath()))) {
-                    isRightResource = true;
-                    break;
-                }
-            }
-        }
 
-        if (!isRightResource) {
-            System.exit(4);
+        for (ResourceUsersRoles resUserRole : resourceUsersRoles) {
+            if (role.equals(resUserRole.getRoleName()) && Validation.isCorrectPath(resource, resUserRole.getPath()))
+                return;
         }
+        System.exit(4);
     }
 
     public static void account(String dateStart, String dateEnd, String volume, ArrayList<Accounting> accountings) {
@@ -50,9 +40,8 @@ public class Aaa {
         if ((!Validation.isValidVolume(volume)) || (!Validation.isValidDate(dateStart))
                 || (!Validation.isValidDate(dateEnd))) {
             System.exit(5);
-        }
-        else {
-            accountings.add(new Accounting(dateStart,dateEnd,volume));
+        } else {
+            accountings.add(new Accounting(dateStart, dateEnd, volume));
         }
     }
 }
