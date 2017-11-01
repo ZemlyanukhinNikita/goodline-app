@@ -29,7 +29,7 @@ public class Aaa {
         }
 
         for (ResourceUsersRoles resUserRole : resourceUsersRoles) {
-            if (role.equals(resUserRole.getRoleName()) && Validation.isCorrectPath(resource, resUserRole.getPath()))
+            if (role.equals(resUserRole.getRole().toString()) && Validation.isCorrectPath(resource, resUserRole.getPath()))
                 return;
         }
         System.exit(4);
