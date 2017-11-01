@@ -14,7 +14,8 @@ public class UserData {
     }
 
     public boolean isAuthorized() {
-        return (isAuthenticated() && (this.role != null) && (this.path != null));
+        return (isAuthenticated()
+                && (this.role != null) && (this.path != null));
     }
 
     public boolean isAccounted() {

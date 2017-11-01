@@ -28,7 +28,7 @@ public class Main {
         resourceUsersRoles.add(new ResourceUsersRoles(5L, 2L, Roles.EXECUTE, "DDD"));
         resourceUsersRoles.add(new ResourceUsersRoles(5L, 2L, Roles.READ, "DDD"));
 
-        ArrayList<Accounting> accountings = new ArrayList<>();
+        ArrayList<Accounting> accounting = new ArrayList<>();
 
         CmdParser cmdParser = new CmdParser();
         UserData userData = cmdParser.cliParse(args);
@@ -39,11 +39,11 @@ public class Main {
 
         if (userData.isAuthorized()) {
 
-            Aaa.authorize(userData.getLogin(), userData.getRole(), userData.getPath(), users, resourceUsersRoles);
+            Aaa.authorize(userData.getRole(), userData.getPath(), resourceUsersRoles);
         }
 
         if (userData.isAccounted()) {
-            Aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume(), accountings);
+            Aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume(), accounting);
         }
 
         if (options.hasOption("h") && !userData.isAuthenticated()) {

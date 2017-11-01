@@ -21,27 +21,29 @@ public class Aaa {
         }
     }
 
-    public static void authorize(String login, String role, String resource,
-                                 ArrayList<User> users, ArrayList<ResourceUsersRoles> resourceUsersRoles) {
+    public static void authorize(String role, String resource,
+                                 ArrayList<ResourceUsersRoles> resourceUsersRoles) {
         //Проверка валидности роли
         if (!Roles.isValidRole(role)) {
             System.exit(3);
         }
 
         for (ResourceUsersRoles resUserRole : resourceUsersRoles) {
-            if (role.equals(resUserRole.getRole().toString()) && Validation.isCorrectPath(resource, resUserRole.getPath()))
+            if (role.equals(resUserRole.getRole().toString())
+                    && Validation.isCorrectPath(resource, resUserRole.getPath()))
                 return;
         }
         System.exit(4);
     }
 
-    public static void account(String dateStart, String dateEnd, String volume, ArrayList<Accounting> accountings) {
-
+    public static void account(String dateStart, String dateEnd, String volume,
+                               ArrayList<Accounting> accounting) {
+        //Проверка валидности объема и дат.
         if ((!Validation.isValidVolume(volume)) || (!Validation.isValidDate(dateStart))
                 || (!Validation.isValidDate(dateEnd))) {
             System.exit(5);
         } else {
-            accountings.add(new Accounting(dateStart, dateEnd, volume));
+            accounting.add(new Accounting(dateStart, dateEnd, volume));
         }
     }
 }
