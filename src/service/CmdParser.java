@@ -23,8 +23,7 @@ public class CmdParser {
 
     public UserData cliParse(String[] args) throws ParseException {
         CommandLineParser parser = new DefaultParser();
-        CommandLine cmd;
-        cmd = parser.parse(options, args);
+        CommandLine cmd = parser.parse(options, args);
         UserData userData = new UserData();
         userData.setLogin(cmd.getOptionValue("l"));
         userData.setPassword(cmd.getOptionValue("p"));
