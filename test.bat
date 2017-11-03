@@ -54,4 +54,41 @@ java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya -p qwerty -r WRIRE
 echo "3" %ERRORLEVEL%
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l Vasya123 -p 123 -r READ -pt DDD
 echo "0" %ERRORLEVEL%
+
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -h
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l XXX -p XXX
+echo "1" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l jdoe -p XXX
+echo "2" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l jdoe -p sup3rpaZZ
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l xxx -p yyy
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -l jdoe -p sup3rpaZZ
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -l jdoe -p sup3rpaZZ -r READ -pt a
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -l jdoe -p sup3rpaZZ -r READ -pt a.b
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -l jdoe -p sup3rpaZZ -r XXX -pt a.b
+echo "3" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -l jdoe -p sup3rpaZZ -r READ -pt XXX
+echo "4" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -l jdoe -p sup3rpaZZ -r WRITE -pt a
+echo "4" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -l jdoe -p sup3rpaZZ -r WRITE -pt a.bc
+echo "4" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -l jdoe -p sup3rpaZZ -r READ -pt a.b -ds 2015-01-01 -de 2015-12-31 -v 100
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -l jdoe -p sup3rpaZZ -r READ -pt a.b -ds 01-01-2015 -de 2015-12-31 -v 100
+echo "5" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -l jdoe -p sup3rpaZZ -r READ -pt a.b -ds 2015-01-01 -de 2015-12-31 -v XXX
+echo "5" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -l X -p X -r READ -pt X -ds 2015-01-01 -de 2015-12-31 -v XXX
+echo "1" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -l X -p X -r READ -pt X
+echo "1" %ERRORLEVEL%
 PAUSE
