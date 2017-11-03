@@ -38,7 +38,6 @@ public class Main {
         }
 
         if (userData.isAuthorized()) {
-
             Aaa.authorize(userData.getRole(), userData.getPath(), resourceUsersRoles);
         }
 

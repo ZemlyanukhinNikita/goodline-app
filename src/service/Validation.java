@@ -8,6 +8,7 @@ class Validation {
 
     static boolean isValidVolume(String v) {
         try {
+            //noinspection ResultOfMethodCallIgnored
             parseInt(v);
             return true;
         } catch (Exception e) {

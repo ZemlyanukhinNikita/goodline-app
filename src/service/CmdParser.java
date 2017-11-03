@@ -6,14 +6,15 @@ public class CmdParser {
     public static Options options = new Options();
 
     public CmdParser() {
-        options.addOption("l", true, "User login");
-        options.addOption("p", true, "USer password");
-        options.addOption("r", true, "User role");
-        options.addOption("pt", true, "User resource");
-        options.addOption("ds", true, "Data start");
-        options.addOption("de", true, "Data end");
-        options.addOption("v", true, "User volume");
-        options.addOption("h", false, "Help information");
+        options
+                .addOption("l", true, "User login")
+                .addOption("p", true, "USer password")
+                .addOption("r", true, "User role")
+                .addOption("pt", true, "User resource")
+                .addOption("ds", true, "Data start")
+                .addOption("de", true, "Data end")
+                .addOption("v", true, "User volume")
+                .addOption("h", false, "Help information");
     }
 
     public static void printHelp() {
@@ -24,6 +25,7 @@ public class CmdParser {
     public UserData cliParse(String[] args) throws ParseException {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
+
         UserData userData = new UserData();
         userData.setLogin(cmd.getOptionValue("l"));
         userData.setPassword(cmd.getOptionValue("p"));
