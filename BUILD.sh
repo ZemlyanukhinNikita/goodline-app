@@ -8,7 +8,7 @@ if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
 	SRC="src"
 	CP="lib/*"
 	MAIN1="main.Main"
-elif [ "$(expr substr $(uname -s) 1 10)" == "Linux" ]; then
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	mkdir "out/classes"
 	CLASSES="out/classes/"
 	SRC="src"
