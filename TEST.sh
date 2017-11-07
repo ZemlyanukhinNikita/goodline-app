@@ -5,7 +5,7 @@ test () {
     parametrs=$?
     if [[ $parametrs -ne $2 ]]; then
         echo $2 $parametrs
-        $counter++
+        $counter+=1
     else
         echo $2 $parametrs
     fi
