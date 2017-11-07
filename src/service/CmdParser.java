@@ -19,7 +19,7 @@ public class CmdParser {
 
     public static void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("Main", options);
+        formatter.printHelp("main.Main", options);
     }
 
     public UserData cliParse(String[] args) throws ParseException {

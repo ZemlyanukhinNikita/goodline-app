@@ -1,3 +1,5 @@
+package main;
+
 import domain.Accounting;
 import domain.ResourceUsersRoles;
 import domain.Roles;
