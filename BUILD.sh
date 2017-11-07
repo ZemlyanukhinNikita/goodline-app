@@ -1,6 +1,6 @@
 #!/bin/bash
-
-rm -rf "out/classes"
+OUT="out/classes"
+rm -rf "$OUT"
 
 if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
 	mkdir "out/classes"
