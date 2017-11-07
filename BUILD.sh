@@ -9,7 +9,13 @@ if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
 	CP="lib/*"
 	MAIN1="main.Main"
 fi
-
+if [ "$(expr substr $(uname -s) 1 10)" == "Linux" ]; then
+	mkdir "out/classes"
+	CLASSES="out/classes/"
+	SRC="src"
+	CP="lib/*"
+	MAIN1="main.Main"
+fi
 find . -name "*.java" | xargs javac -cp "$CP" -d $CLASSES -sourcepath $SRC
 
 mkdir -p "out/lib/"
