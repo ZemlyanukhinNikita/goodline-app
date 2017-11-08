@@ -1,11 +1,9 @@
 #!/bin/bash
-
+source ./CONFIG.sh
 if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-	CP="out/lib/*;out/Main.jar"
-	MAIN2="main.Main"
+	CLP="$CP"
 elif [ "$(expr substr $(uname -s) 1 10)" == "Linux" ]; then
-	CP="out/lib/*:out/Main.jar"
-	MAIN2="main.Main"
+	CLP="$CP"
 fi
 
-java -cp "$CP" "$MAIN2" $@
+java -cp "$CLP" "$MAIN" $@
