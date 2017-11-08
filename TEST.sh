@@ -69,3 +69,4 @@ if [[ $counter -eq 0 ]]; then
 else
     echo 1
 fi
+exit $counter
