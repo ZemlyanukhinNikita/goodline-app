@@ -14,7 +14,7 @@ git update-index
 chmod +x *.sh
 ./BUILD.sh
 
-test "" 1
+test "" 0
 test "-h" 0
 
 test "-l XXX -p XXX" 1
