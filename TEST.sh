@@ -65,9 +65,7 @@ test "-l Vasya -p qwerty -r WRIRE -pt A.B" 3
 test "-l Vasya123 -p 123 -r READ -pt DDD" 0
 
 if [[ $counter -eq 0 ]]; then
-    echo result 0
+    echo 0
 else
-    echo result 1
+    echo 1
 fi
-
-exec bash
