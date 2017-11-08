@@ -1,9 +1,9 @@
 #!/bin/bash
+
 OUT="out/classes"
-rm -rf "$OUT"
 
 if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-	mkdir "out/classes"
+	mkdir -p "out/classes"
 	CLASSES="out/classes/"
 	SRC="src"
 	CP="lib/*"
@@ -16,7 +16,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	MAIN1="main.Main"
 fi
 find . -name "*.java" | xargs javac -cp "$CP" -d $CLASSES -sourcepath $SRC
-
+rm -rf "$OUT"
 mkdir -p "out/lib/"
 cp $CP "out/lib/"
 cd out
