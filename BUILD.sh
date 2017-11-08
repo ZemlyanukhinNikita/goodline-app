@@ -6,15 +6,15 @@ rm -rf "$OUT"
 mkdir -p $OUT
 
 if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-	CLP="$LIB"
+	CP="$LIB"
 elif [ "$(expr substr $(uname -s) 1 10)" == "Linux" ]; then
-	CLP="$LIB"
+	CP="$LIB"
 fi
 
-find . -name "*.java" | xargs javac -cp "$CLP" -d $OUT -sourcepath $SRC
+find . -name "*.java" | xargs javac -cp "$CP" -d $OUT -sourcepath $SRC
 
 mkdir -p "out/lib/"
-cp $CLP "out/lib/"
+cp $CP "out/lib/"
 cd out
 cd classes
 JAR="../Main.jar"
