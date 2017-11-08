@@ -9,7 +9,7 @@ if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
 	SRC="src"
 	CP="lib/*"
 	MAIN1="main.Main"
-elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+elif [ "$(expr substr $(uname -s) 1 10)" == "Linux" ]; then
 	SRC="src"
 	CP="lib/*"
 	MAIN1="main.Main"
