@@ -10,8 +10,7 @@ test () {
         echo $2 $parametrs
     fi
 }
-git update-index 
-chmod +x *.sh
+
 ./BUILD.sh
 
 test "" 0

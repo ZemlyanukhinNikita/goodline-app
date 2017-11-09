@@ -1,4 +1,5 @@
 #!/bin/bash
+
 source ./CONFIG.sh
 
 OUT="out/classes"
