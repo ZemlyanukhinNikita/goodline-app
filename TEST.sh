@@ -13,8 +13,8 @@ test () {
 
 ./BUILD.sh
 
-test "" 1
-test "-h" 1
+test "" 0
+test "-h" 0
 
 test "-l XXX -p XXX" 1
 test "-l jdoe -p XXX" 2
