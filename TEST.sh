@@ -4,10 +4,10 @@ test () {
     ./RUN.sh $1
     parametrs=$?
     if [[ $parametrs -ne $2 ]]; then
-        echo $2 $parametrs
+        echo FAIL $1 $2 - $parametrs
         counter=$counter+1
     else
-        echo $2 $parametrs
+        echo OK $1 $2 - $parametrs
     fi
 }
 
@@ -64,8 +64,8 @@ test "-l Vasya -p qwerty -r WRIRE -pt A.B" 3
 test "-l Vasya123 -p 123 -r READ -pt DDD" 0
 
 if [[ $counter -eq 0 ]]; then
-    echo 0
+    echo ALL TESTS OK
 else
-    echo 1
+    echo $counter TESTS FAIL
 fi
 exit $counter
