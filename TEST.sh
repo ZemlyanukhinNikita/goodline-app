@@ -5,7 +5,7 @@ test () {
     parametrs=$?
     if [[ $parametrs -ne $2 ]]; then
         echo FAIL $1   $2 - $parametrs
-        counter=counter+1
+        ((counter++))
     else
         echo OK $1   $2 - $parametrs
     fi
