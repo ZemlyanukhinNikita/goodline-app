@@ -13,8 +13,8 @@ test () {
 
 ./BUILD.sh
 
-test "" 0
-test "-h" 0
+test "" 1
+test "-h" 1
 
 test "-l XXX -p XXX" 1
 test "-l jdoe -p XXX" 2
@@ -64,7 +64,7 @@ test "-l Vasya -p qwerty -r WRIRE -pt A.B" 3
 test "-l Vasya123 -p 123 -r READ -pt DDD" 0
 
 if [[ $counter -eq 0 ]]; then
-    echo ALL $counter TESTS OK
+    echo ALL TESTS OK
 else
     echo $counter TESTS FAIL
 fi
