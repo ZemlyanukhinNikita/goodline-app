@@ -27,23 +27,22 @@
   - Смотреть видеоматериалы.
 ##### 2.3 Ожидаемые результаты
   - Изучить и научиться использовать библиотеку
-  - Логировать в stdout 
-  - Логировать в aaa.log
+  - Инициализировать схему если БД не найдена 
 ### 3. Создать файл roadmap3.md, написать план работ и добавить ссылку в README.md
 ### 4. Описать таблицы базы данных
 ##### 4.1 TABLE USER
-  + ID
-  + LOGIN
+  + ID (pk, auto_increment)
+  + LOGIN (unique)
   + HASH_PASSWORD
   + SALT
 ##### 4.2 TABLE RESOURCE_USERS_ROLES
-  + ID
-  + USER_ID
+  + ID (pk, auto_increment)
+  + USER_ID (fk)
   + ROLE
   + PATH
 ##### 4.3 ACCOUNTING
-  + ID
-  + RESOURCE_USERS_ROLES_ID
+  + ID (pk, unique, auto_increment)
+  + RESOURCE_USERS_ROLES_ID (fk)
   + START_DATE
   + END_DATE
   + VOLUME
