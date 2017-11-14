@@ -16,6 +16,7 @@ find . -name "*.java" | xargs javac -cp "$CP" -d $OUT -sourcepath $SRC
 
 mkdir -p "out/lib/"
 cp $CP "out/lib/"
+cp -r $RES "out/classes/"
 cd out
 cd classes
 JAR="../Main.jar"
