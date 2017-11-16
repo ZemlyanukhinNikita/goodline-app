@@ -1,51 +1,67 @@
 package service;
 
+import dao.AaaDao;
 import domain.Accounting;
 import domain.ResourceUsersRoles;
 import domain.Roles;
 import domain.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Aaa {
-    public static void authenticate(String login, String pass, ArrayList<User> users) {
-        //По коллеции User сравниваем логин и пароль с командной строки с логином и паролем пользователя из коллекции
-        for (User user : users) {
-            if (login.equals(user.getLogin())
-                    && Hash.isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
-                return;
-            }
-            if (login.equals(user.getLogin())
-                    && !Hash.isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
-                System.exit(2);
-            }
+    private static final Logger logger = LogManager.getLogger(Aaa.class.getName());
+
+    private static User getUser(String login) throws SQLException {
+        return AaaDao.getDataFromTableUser(login);
+    }
+    public static int authenticate(String login, String pass) throws SQLException {
+        User user= getUser(login);
+        if(AaaDao.getDataFromTableUser(login)==null) {
+            logger.error("login " + login + " not found in the database");
+            return 1;
         }
-        System.exit(1);
+        if (AaaDao.getDataFromTableUser(login) != null && !Hash.isRightHashPassword(pass,user.getPassword(),user.getSalt())) {
+            logger.error("password " + pass + " for User " + login + "not found in the database");
+            return 2;
+        }
+        return 0;
     }
 
-    public static void authorize(String role, String resource,
-                                 ArrayList<ResourceUsersRoles> resourceUsersRoles) {
-        //Проверка валидности роли
+
+    public static int authorize(String login, String role, String resource) throws SQLException {
+
+        User user = getUser(login);
+        ArrayList<ResourceUsersRoles> resourceUsersRoles1 = AaaDao.getDataFromTableResourceUsersRoles(user);
         if (!Roles.isValidRole(role)) {
-            System.exit(3);
+            logger.error("role " + role + " invalid");
+            return 3;
         }
 
-        for (ResourceUsersRoles resUserRole : resourceUsersRoles) {
-            if (role.equals(resUserRole.getRole().toString())
-                    && Validation.isCorrectPath(resource, resUserRole.getPath()))
-                return;
+        if (resourceUsersRoles1 != null) {
+            for (ResourceUsersRoles resUserRole : resourceUsersRoles1) {
+                if (role.equals(resUserRole.getRole().toString())
+                        && Validation.isCorrectPath(resource, resUserRole.getPath()))
+                    return 0;
+            }
         }
-        System.exit(4);
+        logger.error("resource " + resource + " not found by User " + login);
+        return 4;
     }
 
-    public static void account(String dateStart, String dateEnd, String volume,
-                               ArrayList<Accounting> accounting) {
+    public static int account(String dateStart, String dateEnd, String volume,
+                              ArrayList<Accounting> accounting) throws SQLException {
         //Проверка валидности объема и дат.
         if ((!Validation.isValidVolume(volume)) || (!Validation.isValidDate(dateStart))
                 || (!Validation.isValidDate(dateEnd))) {
-            System.exit(5);
+            logger.error("Invalid dates or volume");
+            return 5;
         } else {
-            accounting.add(new Accounting(dateStart, dateEnd, volume));
+            accounting.add(new Accounting(dateStart,dateEnd,volume));
+            AaaDao.setDataToTableAccounting(new Accounting(dateStart,dateEnd,volume));
         }
+        return 0;
     }
 }

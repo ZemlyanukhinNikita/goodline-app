@@ -1,10 +1,14 @@
 package service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.time.LocalDate;
 
 import static java.lang.Integer.parseInt;
 
 class Validation {
+    private static final Logger logger = LogManager.getLogger(Validation.class.getName());
 
     static boolean isValidVolume(String v) {
         try {
@@ -12,6 +16,7 @@ class Validation {
             parseInt(v);
             return true;
         } catch (Exception e) {
+            logger.error("Volume isn`t check", e);
             return false;
         }
     }
@@ -21,6 +26,7 @@ class Validation {
             LocalDate.parse(d);
             return true;
         } catch (Exception e) {
+            logger.error("Date isn`t check", e);
             return false;
         }
     }
@@ -30,16 +36,16 @@ class Validation {
         String[] pth = path.split("\\.");
 
         if (inputArg.length < pth.length) {
+            logger.error("Length resource from cmd < length of user`s resource");
             return false;
         } else {
             for (int i = 0; i < pth.length; i++) {
                 if (!inputArg[i].equals(pth[i])) {
+                    logger.error("Resources did not match");
                     return false;
                 }
             }
             return true;
         }
-
     }
-
 }

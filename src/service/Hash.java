@@ -1,5 +1,8 @@
 package service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -7,6 +10,8 @@ import java.security.SecureRandom;
 import static java.lang.Integer.toHexString;
 
 public class Hash {
+    private static final Logger logger = LogManager.getLogger(Hash.class.getName());
+
     private static String getHash(String source) {
         //Создаем экземпляр класса
         MessageDigest md5;
@@ -33,6 +38,7 @@ public class Hash {
                 hexString.append(toHexString(0xFF & aMessageDigest));
             }
         } catch (NoSuchAlgorithmException e) {
+            logger.error("Hash isn`t generate", e);
             return null;
         }
         return hexString.toString();
@@ -61,7 +67,7 @@ public class Hash {
     }
 
     static boolean isRightHashPassword(String pass, String userPass, String salt) {
-        return getDoubleHash(pass, salt).equals(getDoubleHash(userPass, salt));
+        return getDoubleHash(pass, salt).equals(userPass);
     }
 
     private static String getDoubleHash(String pass, String salt) {

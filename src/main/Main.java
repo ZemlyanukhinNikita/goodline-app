@@ -1,73 +1,58 @@
 package main;
 
+import dao.AaaDao;
 import domain.Accounting;
-import domain.ResourceUsersRoles;
-import domain.Roles;
-import domain.User;
 import org.apache.commons.cli.ParseException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import service.Aaa;
 import service.CmdParser;
-import service.Hash;
+import service.DbConnection;
 import service.UserData;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static service.CmdParser.options;
 import static service.CmdParser.printHelp;
-import static service.DbConnection.doMigration;
-import static service.DbConnection.getDbConnection;
 
 public class Main {
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
 
-    public static void main(String[] args) throws ParseException {
-        ArrayList<User> users = new ArrayList<>();
-        users.add(new User((long) 1, "Vasya", "qwerty", Hash.getSalt()));
-        users.add(new User((long) 2, "Vasya123", "123", Hash.getSalt()));
-        users.add(new User((long) 3, "jdoe", "sup3rpaZZ", Hash.getSalt()));
-        users.add(new User((long) 4, "jrow", "Qweqrty12", Hash.getSalt()));
-        users.add(new User((long) 5, "xxx", "yyy", Hash.getSalt()));
-        //System.out.println("password "+ Hash.getHash(users.get(0).getPassword()) + "salt "+users.get(0).getSalt());
-        //System.out.println("password "+ Hash.getHash(users.get(1).getPassword()) + "salt "+users.get(1).getSalt());
-        //System.out.println("password "+ Hash.getHash(users.get(2).getPassword()) + "salt "+users.get(2).getSalt());
-        //System.out.println("password "+ Hash.getHash(users.get(3).getPassword()) + "salt "+users.get(3).getSalt());
-        //System.out.println("password "+ Hash.getHash(users.get(4).getPassword()) + "salt "+users.get(4).getSalt());
-
-        ArrayList<ResourceUsersRoles> resourceUsersRoles = new ArrayList<>();
-        resourceUsersRoles.add(new ResourceUsersRoles(1L, 1L, Roles.READ, "A.B"));
-        resourceUsersRoles.add(new ResourceUsersRoles(2L, 1L, Roles.READ, "H.I.J"));
-        resourceUsersRoles.add(new ResourceUsersRoles(3L, 1L, Roles.WRITE, "H.I.J"));
-
-        resourceUsersRoles.add(new ResourceUsersRoles(4L, 2L, Roles.EXECUTE, "H.I.J"));
-        resourceUsersRoles.add(new ResourceUsersRoles(5L, 2L, Roles.EXECUTE, "DDD"));
-        resourceUsersRoles.add(new ResourceUsersRoles(6L, 2L, Roles.READ, "DDD"));
-
-        resourceUsersRoles.add(new ResourceUsersRoles(7L, 3L, Roles.READ, "a"));
-        resourceUsersRoles.add(new ResourceUsersRoles(8L, 3L, Roles.WRITE, "a.b"));
-        resourceUsersRoles.add(new ResourceUsersRoles(9L, 4L, Roles.EXECUTE, "a.b.c"));
-        resourceUsersRoles.add(new ResourceUsersRoles(10L, 3L, Roles.EXECUTE, "a.bc"));
-
-
+    public static void main(String[] args) throws ParseException, SQLException {
+        logger.debug("Start application.");
         ArrayList<Accounting> accounting = new ArrayList<>();
 
         CmdParser cmdParser = new CmdParser();
         UserData userData = cmdParser.cliParse(args);
+        Connection connection = DbConnection.getDbConnection();
+        int systemExitCode = 0;
+        new AaaDao(connection);
 
         if (userData.isAuthenticated()) {
-            Aaa.authenticate(userData.getLogin(), userData.getPassword(), users);
+            logger.debug("Authentication is performed.");
+            systemExitCode = Aaa.authenticate(userData.getLogin(), userData.getPassword());
         }
 
-        if (userData.isAuthorized()) {
-            Aaa.authorize(userData.getRole(), userData.getPath(), resourceUsersRoles);
+        if (systemExitCode == 0 && userData.isAuthorized()) {
+            logger.debug("Authorization is performed.");
+            systemExitCode = Aaa.authorize(userData.getLogin(), userData.getRole(), userData.getPath());
         }
 
-        if (userData.isAccounted()) {
-            Aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume(), accounting);
+        if (systemExitCode == 0 && userData.isAccounted()) {
+            logger.debug("Accounting is performed.");
+            systemExitCode = Aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume(), accounting);
         }
 
         if (options.hasOption("h") && !userData.isAuthenticated()) {
+            logger.debug("Print help.");
             printHelp();
         }
-        doMigration();
-        getDbConnection();
+        if (connection != null) {
+            connection.close();
+        }
+        logger.debug("Application is finished");
+        System.exit(systemExitCode);
     }
 }
