@@ -16,6 +16,8 @@
 
 [План работ №2](https://github.com/ZemlyanukhinNikita/goodline-app/blob/master/Roadmap2.md)
 
+[План работ №3](https://github.com/ZemlyanukhinNikita/goodline-app/blob/master/Roadmap3.md)
+
 Также обязательным требованием является написание тестов. На данный момент приложение протестировано в системе **travis-ci.org** [![Build Status](https://travis-ci.org/ZemlyanukhinNikita/goodline-app.svg?branch=master)](https://travis-ci.org/ZemlyanukhinNikita/goodline-app) 
 
 ### Инструкция по сборке, запуску и тестированию приложения:
