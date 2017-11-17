@@ -12,11 +12,11 @@
 
 ##### На каждом этапе разработки выдаются требования к приложению, по которым составляется план приложения: 
 
-[План работ №1](https://github.com/ZemlyanukhinNikita/goodline-app/blob/master/Roadmap1.md)
+[План работ №1](Roadmap1.md)
 
-[План работ №2](https://github.com/ZemlyanukhinNikita/goodline-app/blob/master/Roadmap2.md)
+[План работ №2](Roadmap2.md)
 
-[План работ №3](https://github.com/ZemlyanukhinNikita/goodline-app/blob/master/Roadmap3.md)
+[План работ №3](Roadmap3.md)
 
 Также обязательным требованием является написание тестов. На данный момент приложение протестировано в системе **travis-ci.org** [![Build Status](https://travis-ci.org/ZemlyanukhinNikita/goodline-app.svg?branch=master)](https://travis-ci.org/ZemlyanukhinNikita/goodline-app) 
 
