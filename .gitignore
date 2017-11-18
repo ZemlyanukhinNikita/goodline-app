@@ -4,3 +4,5 @@
 out/*
 Test.java
 aaa.h2.db
+aaa.log
+aaa.trace.db
