@@ -11,7 +11,7 @@ test () {
     fi
 }
 
-./BUILD.sh
+./BUILD.sh login password
 
 test "" 0
 test "-h" 0
