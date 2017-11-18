@@ -28,21 +28,22 @@ public class Main {
         UserData userData = cmdParser.cliParse(args);
         Connection connection = DbConnection.getDbConnection();
         int systemExitCode = 0;
-        new AaaDao(connection);
+        AaaDao aaaDao = new AaaDao(connection);
+        Aaa aaa = new Aaa(aaaDao);
 
         if (userData.isAuthenticated()) {
             logger.debug("Authentication is performed.");
-            systemExitCode = Aaa.authenticate(userData.getLogin(), userData.getPassword());
+            systemExitCode = aaa.authenticate(userData.getLogin(), userData.getPassword());
         }
 
         if (systemExitCode == 0 && userData.isAuthorized()) {
             logger.debug("Authorization is performed.");
-            systemExitCode = Aaa.authorize(userData.getLogin(), userData.getRole(), userData.getPath());
+            systemExitCode = aaa.authorize(userData.getLogin(), userData.getRole(), userData.getPath());
         }
 
         if (systemExitCode == 0 && userData.isAccounted()) {
             logger.debug("Accounting is performed.");
-            systemExitCode = Aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume(), accounting);
+            systemExitCode = aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume(), accounting);
         }
 
         if (options.hasOption("h") && !userData.isAuthenticated()) {

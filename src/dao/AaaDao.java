@@ -1,8 +1,6 @@
 package dao;
 
 import domain.Accounting;
-import domain.ResourceUsersRoles;
-import domain.Roles;
 import domain.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,90 +9,67 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class AaaDao {
     private static final Logger logger = LogManager.getLogger(AaaDao.class.getName());
-    private static Connection connection;
+    private Connection connection;
 
     public AaaDao(Connection connection) {
-        AaaDao.connection = connection;
+        if (connection != null) {
+            this.connection = connection;
+        }
     }
 
-    private static Connection getConnection() {
+    private Connection getConnection() {
         return connection;
     }
 
-    public static User getDataFromTableUser(String login) throws SQLException {
-        PreparedStatement preparedStatement = null;
-        try {
-            if (getConnection() != null) {
-                preparedStatement = getConnection().prepareStatement("SELECT * FROM USER WHERE LOGIN = ?");
-                preparedStatement.setString(1, login);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
+    public User getDataFromTableUser(String login) {
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT * FROM USER WHERE LOGIN = ?")) {
+            preparedStatement.setString(1, login);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
                     return new User(resultSet.getLong("ID"),
                             resultSet.getString("LOGIN"),
                             resultSet.getString("PASSWORD"),
                             resultSet.getString("SALT"));
                 }
             }
+
         } catch (SQLException e) {
             logger.error("request failed", e);
-            e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
         }
         return null;
     }
 
-    public static ArrayList<ResourceUsersRoles> getDataFromTableResourceUsersRoles(User user) throws SQLException {
-        PreparedStatement preparedStatement = null;
-        ArrayList<ResourceUsersRoles> resourceUsersRoles = new ArrayList<>();
-        try {
-            if (getConnection() != null) {
-                preparedStatement = getConnection().prepareStatement("SELECT * FROM RESOURCE_USERS_ROLES WHERE USER_ID = ?");
-                preparedStatement.setLong(1, user.getId());
-                ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    resourceUsersRoles.add(new ResourceUsersRoles(resultSet.getLong("ID"),
-                            resultSet.getLong("USER_ID"),
-                            Roles.valueOf(resultSet.getString("ROLE")),
-                            resultSet.getString("PATH")));
+    public String getResourceFromTableResourceUsersRoles(User user, String role, String path) {
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(
+                "SELECT PATH FROM RESOURCE_USERS_ROLES WHERE USER_ID = ? AND ROLE = ? AND PATH || '.'" +
+                        " LIKE LEFT(? ||'.', LENGTH(PATH || '.'))")) {
+            preparedStatement.setLong(1, user.getId());
+            preparedStatement.setString(2, role);
+            preparedStatement.setString(3, path);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+
+                    return resultSet.getString("PATH");
                 }
-                return resourceUsersRoles;
             }
         } catch (SQLException e) {
             logger.error("request failed", e);
-            e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
         }
         return null;
     }
 
-    public static void setDataToTableAccounting(Accounting accounting) throws SQLException {
-        PreparedStatement preparedStatement = null;
-        try {
-            if (getConnection() != null) {
-                preparedStatement = getConnection().prepareStatement(
-                        "INSERT INTO ACCOUNTING (START_DATE, END_DATE, VOLUME) VALUES (?,?,?)");
-                preparedStatement.setString(1, accounting.getDateStart());
-                preparedStatement.setString(2, accounting.getDateEnd());
-                preparedStatement.setLong(3, Long.parseLong(accounting.getVolume()));
-                preparedStatement.executeUpdate();
-            }
+    public void setDataToTableAccounting(Accounting accounting) {
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(
+                "INSERT INTO ACCOUNTING (START_DATE, END_DATE, VOLUME) VALUES (?,?,?)")) {
+            preparedStatement.setString(1, accounting.getDateStart());
+            preparedStatement.setString(2, accounting.getDateEnd());
+            preparedStatement.setLong(3, Long.parseLong(accounting.getVolume()));
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error("request failed", e);
-            e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
         }
     }
 }
