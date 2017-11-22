@@ -33,13 +33,16 @@ public class AaaDao {
                             resultSet.getString("LOGIN"),
                             resultSet.getString("PASSWORD"),
                             resultSet.getString("SALT"));
+                } else {
+                    logger.error("request failed");
+                    return null;
                 }
             }
 
         } catch (SQLException e) {
-            logger.error("request failed", e);
+            logger.error("Database error", e);
+            return null;
         }
-        return null;
     }
 
     public String getResourceFromTableResourceUsersRoles(User user, String role, String path) {
@@ -53,12 +56,15 @@ public class AaaDao {
                 if (resultSet.next()) {
 
                     return resultSet.getString("PATH");
+                } else {
+                    logger.error("request failed");
+                    return null;
                 }
             }
         } catch (SQLException e) {
-            logger.error("request failed", e);
+            logger.error("Database error");
+            return null;
         }
-        return null;
     }
 
     public void setDataToTableAccounting(Accounting accounting) {

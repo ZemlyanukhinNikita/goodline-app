@@ -30,12 +30,12 @@ public class Aaa {
         if (aaaDao.getDataFromTableUser(login) == null) {
             logger.error("login {} not found in the database", login);
             return 1;
-        }
-        if (aaaDao.getDataFromTableUser(login) != null && !hash.isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
+        } else if (!hash.isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
             logger.error("password {} for User {} not found in the database", pass, login);
             return 2;
+        } else {
+            return 0;
         }
-        return 0;
     }
 
     public int authorize(String login, String role, String resource) {
@@ -46,12 +46,12 @@ public class Aaa {
             return 3;
         }
 
-        if (aaaDao.getResourceFromTableResourceUsersRoles(user, role, resource) != null) {
+        if (aaaDao.getResourceFromTableResourceUsersRoles(user, role, resource) == null) {
+            logger.error("resource {} not found by User {}", resource, login);
+            return 4;
+        } else {
             return 0;
         }
-
-        logger.error("resource {} not found by User {}", resource, login);
-        return 4;
     }
 
     public int account(String dateStart, String dateEnd, String volume,
@@ -64,7 +64,7 @@ public class Aaa {
         } else {
             accounting.add(new Accounting(dateStart, dateEnd, volume));
             aaaDao.setDataToTableAccounting(new Accounting(dateStart, dateEnd, volume));
+            return 0;
         }
-        return 0;
     }
 }

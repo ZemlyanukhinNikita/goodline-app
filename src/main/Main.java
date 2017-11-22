@@ -42,7 +42,8 @@ public class Main {
 
                 if (systemExitCode == 0 && userData.isAccounted()) {
                     logger.debug("Accounting is performed.");
-                    systemExitCode = aaa.account(userData.getDateStart(), userData.getDateEnd(), userData.getVolume(), accounting);
+                    systemExitCode = aaa.account(userData.getDateStart(), userData.getDateEnd(),
+                            userData.getVolume(), accounting);
                 }
 
                 if (!userData.isAuthenticated()) {

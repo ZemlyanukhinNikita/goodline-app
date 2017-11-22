@@ -32,11 +32,13 @@ public class DbConnection {
             return con;
         } catch (ClassNotFoundException | SQLException e) {
             logger.error("Class not found ", e);
+            logger.error("No connection to the database.");
+            return null;
         } catch (IOException e) {
             logger.error("File not found ", e);
+            logger.error("No connection to the database.");
+            return null;
         }
-        logger.error("No connection to the database.");
-        return null;
     }
 
     private void doMigration() {

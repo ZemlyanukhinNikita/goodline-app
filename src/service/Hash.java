@@ -67,10 +67,6 @@ public class Hash {
     }
 
     boolean isRightHashPassword(String pass, String userPass, String salt) {
-        return getDoubleHash(pass, salt).equals(userPass);
-    }
-
-    private String getDoubleHash(String pass, String salt) {
-        return getHash(getHash(pass) + salt);
+        return userPass.equals(getHash(getHash(pass) + salt));
     }
 }
