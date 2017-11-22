@@ -11,24 +11,24 @@ import java.util.ArrayList;
 
 public class Aaa {
     private static final Logger logger = LogManager.getLogger(Aaa.class.getName());
-    private static AaaDao aaaDao;
+    private AaaDao aaaDao;
 
     public Aaa(AaaDao aaaDao) {
-        Aaa.aaaDao = aaaDao;
+        this.aaaDao = aaaDao;
     }
 
-    private static User getUser(String login) {
+    private User getUser(String login) {
         return aaaDao.getDataFromTableUser(login);
     }
 
     public int authenticate(String login, String pass) {
         User user = getUser(login);
         if (aaaDao.getDataFromTableUser(login) == null) {
-            logger.error("login " + login + " not found in the database");
+            logger.error("login {} not found in the database", login);
             return 1;
         }
         if (aaaDao.getDataFromTableUser(login) != null && !Hash.isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
-            logger.error("password " + pass + " for User " + login + "not found in the database");
+            logger.error("password {} for User {} not found in the database", pass, login);
             return 2;
         }
         return 0;
@@ -38,16 +38,15 @@ public class Aaa {
 
         User user = getUser(login);
         if (!Roles.isValidRole(role)) {
-            logger.error("role " + role + " invalid");
+            logger.error("role {} invalid", role);
             return 3;
         }
 
         if (aaaDao.getResourceFromTableResourceUsersRoles(user, role, resource) != null) {
-            System.out.println(aaaDao.getResourceFromTableResourceUsersRoles(user, role, resource));
             return 0;
         }
 
-        logger.error("resource " + resource + " not found by User " + login);
+        logger.error("resource {} not found by User {}", resource, login);
         return 4;
     }
 
