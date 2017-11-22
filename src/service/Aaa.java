@@ -12,9 +12,13 @@ import java.util.ArrayList;
 public class Aaa {
     private static final Logger logger = LogManager.getLogger(Aaa.class.getName());
     private AaaDao aaaDao;
+    private Validation validation;
+    private Hash hash;
 
-    public Aaa(AaaDao aaaDao) {
+    public Aaa(AaaDao aaaDao, Validation validation, Hash hash) {
         this.aaaDao = aaaDao;
+        this.validation = validation;
+        this.hash = hash;
     }
 
     private User getUser(String login) {
@@ -27,7 +31,7 @@ public class Aaa {
             logger.error("login {} not found in the database", login);
             return 1;
         }
-        if (aaaDao.getDataFromTableUser(login) != null && !Hash.isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
+        if (aaaDao.getDataFromTableUser(login) != null && !hash.isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
             logger.error("password {} for User {} not found in the database", pass, login);
             return 2;
         }
@@ -53,8 +57,8 @@ public class Aaa {
     public int account(String dateStart, String dateEnd, String volume,
                        ArrayList<Accounting> accounting) {
         //Проверка валидности объема и дат.
-        if ((!Validation.isValidVolume(volume)) || (!Validation.isValidDate(dateStart))
-                || (!Validation.isValidDate(dateEnd))) {
+        if ((!validation.isValidVolume(volume)) || (!validation.isValidDate(dateStart))
+                || (!validation.isValidDate(dateEnd))) {
             logger.error("Invalid dates or volume");
             return 5;
         } else {

@@ -7,10 +7,10 @@ import java.time.LocalDate;
 
 import static java.lang.Integer.parseInt;
 
-class Validation {
+public class Validation {
     private static final Logger logger = LogManager.getLogger(Validation.class.getName());
 
-    static boolean isValidVolume(String v) {
+    boolean isValidVolume(String v) {
         try {
             //noinspection ResultOfMethodCallIgnored
             parseInt(v);
@@ -21,7 +21,7 @@ class Validation {
         }
     }
 
-    static boolean isValidDate(String d) {
+    boolean isValidDate(String d) {
         try {
             LocalDate.parse(d);
             return true;
@@ -31,7 +31,7 @@ class Validation {
         }
     }
 
-    static boolean isCorrectPath(String inputPath, String path) {
+    boolean isCorrectPath(String inputPath, String path) {
         String[] inputArg = inputPath.split("\\.");
         String[] pth = path.split("\\.");
 

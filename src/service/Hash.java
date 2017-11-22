@@ -12,7 +12,7 @@ import static java.lang.Integer.toHexString;
 public class Hash {
     private static final Logger logger = LogManager.getLogger(Hash.class.getName());
 
-    private static String getHash(String source) {
+    private String getHash(String source) {
         //Создаем экземпляр класса
         MessageDigest md5;
         //Создаем строку в которую запишем хешированный пароль
@@ -44,7 +44,7 @@ public class Hash {
         return hexString.toString();
     }
 
-    public static String getSalt() {
+    public String getSalt() {
         StringBuffer hexString = new StringBuffer();
         SecureRandom random = new SecureRandom();
         //Создаем байтовый массив
@@ -66,11 +66,11 @@ public class Hash {
         return s;
     }
 
-    static boolean isRightHashPassword(String pass, String userPass, String salt) {
+    boolean isRightHashPassword(String pass, String userPass, String salt) {
         return getDoubleHash(pass, salt).equals(userPass);
     }
 
-    private static String getDoubleHash(String pass, String salt) {
+    private String getDoubleHash(String pass, String salt) {
         return getHash(getHash(pass) + salt);
     }
 }

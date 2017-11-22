@@ -16,7 +16,7 @@ public class DbConnection {
     private static final Logger logger = LogManager.getLogger(DbConnection.class.getName());
     private static final String PATH_TO_PROPERTIES = "./resources/config.properties";
 
-    public static Connection getDbConnection() {
+    public Connection getDbConnection() {
         FileInputStream fileInputStream;
         //инициализируем специальный объект Properties
         //типа Hashtable для удобной работы с данными
@@ -31,7 +31,7 @@ public class DbConnection {
             doMigration();
             return con;
         } catch (ClassNotFoundException | SQLException e) {
-            logger.error("Class not found " + e);
+            logger.error("Class not found ", e);
         } catch (IOException e) {
             logger.error("File not found ", e);
         }
@@ -39,7 +39,7 @@ public class DbConnection {
         return null;
     }
 
-    private static void doMigration() {
+    private void doMigration() {
         // Create the Flyway instance
         Flyway flyway = new Flyway();
         // Point it to the database

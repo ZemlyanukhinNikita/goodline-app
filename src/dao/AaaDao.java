@@ -23,6 +23,7 @@ public class AaaDao {
     private Connection getConnection() {
         return connection;
     }
+
     public User getDataFromTableUser(String login) {
         try (PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT * FROM USER WHERE LOGIN = ?")) {
             preparedStatement.setString(1, login);

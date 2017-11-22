@@ -3,7 +3,7 @@ package service;
 import org.apache.commons.cli.*;
 
 public class CmdParser {
-    public static Options options = new Options();
+    private Options options = new Options();
 
     public CmdParser() {
         options
@@ -17,7 +17,7 @@ public class CmdParser {
                 .addOption("h", false, "Help information");
     }
 
-    public static void printHelp() {
+    public void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("main.Main", options);
     }
