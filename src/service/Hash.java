@@ -41,6 +41,7 @@ public class Hash {
             logger.error("Hash isn`t generate", e);
             return null;
         }
+        logger.debug("return hash password");
         return hexString.toString();
     }
 
@@ -63,6 +64,7 @@ public class Hash {
         for (byte aSalt : salt) {
             s = String.valueOf(hexString.append(toHexString(0xFF & aSalt)));
         }
+        logger.debug("return hash salt");
         return s;
     }
 

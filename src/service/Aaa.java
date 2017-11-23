@@ -21,11 +21,11 @@ public class Aaa {
         this.hash = hash;
     }
 
-    private User getUser(String login) {
+    private User getUser(String login) throws MyException {
         return aaaDao.getDataFromTableUser(login);
     }
 
-    public int authenticate(String login, String pass) {
+    public int authenticate(String login, String pass) throws MyException {
         User user = getUser(login);
         if (aaaDao.getDataFromTableUser(login) == null) {
             logger.error("login {} not found in the database", login);
@@ -34,11 +34,12 @@ public class Aaa {
             logger.error("password {} for User {} not found in the database", pass, login);
             return 2;
         } else {
+            logger.debug("Authentication is successful");
             return 0;
         }
     }
 
-    public int authorize(String login, String role, String resource) {
+    public int authorize(String login, String role, String resource) throws MyException {
 
         User user = getUser(login);
         if (!Roles.isValidRole(role)) {
@@ -50,6 +51,7 @@ public class Aaa {
             logger.error("resource {} not found by User {}", resource, login);
             return 4;
         } else {
+            logger.debug("Authorization is successful");
             return 0;
         }
     }
@@ -64,6 +66,7 @@ public class Aaa {
         } else {
             accounting.add(new Accounting(dateStart, dateEnd, volume));
             aaaDao.setDataToTableAccounting(new Accounting(dateStart, dateEnd, volume));
+            logger.debug("Accounting is successful");
             return 0;
         }
     }

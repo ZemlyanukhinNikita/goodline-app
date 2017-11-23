@@ -27,9 +27,7 @@ public class DbConnection {
             String driver = prop.getProperty("driver");
             String url = prop.getProperty("url");
             Class.forName(driver);
-            Connection con = DriverManager.getConnection(url, System.getenv("login"), System.getenv("password"));
-            doMigration();
-            return con;
+            return DriverManager.getConnection(url, System.getenv("login"), System.getenv("password"));
         } catch (ClassNotFoundException | SQLException e) {
             logger.error("Class not found ", e);
             logger.error("No connection to the database.");
@@ -41,13 +39,24 @@ public class DbConnection {
         }
     }
 
-    private void doMigration() {
-        // Create the Flyway instance
-        Flyway flyway = new Flyway();
-        // Point it to the database
-        flyway.setDataSource("jdbc:h2:file:./aaa;mv_store=false", System.getenv("login"), System.getenv("password"));
-        // Start the migration
-        logger.debug("Do migrations");
-        flyway.migrate();
+    public void doMigration() {
+        FileInputStream fileInputStream;
+        //инициализируем специальный объект Properties
+        //типа Hashtable для удобной работы с данными
+        Properties prop = new Properties();
+        try {
+            fileInputStream = new FileInputStream(PATH_TO_PROPERTIES);
+            prop.load(fileInputStream);
+            String url = prop.getProperty("url");
+            // Create the Flyway instance
+            Flyway flyway = new Flyway();
+            // Point it to the database
+            flyway.setDataSource(url, System.getenv("login"), System.getenv("password"));
+            // Start the migration
+            logger.debug("Do migrations");
+            flyway.migrate();
+        } catch (IOException e) {
+            logger.error("File not found ", e);
+        }
     }
 }

@@ -14,6 +14,7 @@ public class Validation {
         try {
             //noinspection ResultOfMethodCallIgnored
             parseInt(v);
+            logger.debug("Volume is valid");
             return true;
         } catch (Exception e) {
             logger.error("Volume isn`t check", e);
@@ -24,6 +25,7 @@ public class Validation {
     boolean isValidDate(String d) {
         try {
             LocalDate.parse(d);
+            logger.debug("Date is valid");
             return true;
         } catch (Exception e) {
             logger.error("Date isn`t check", e);
@@ -45,6 +47,7 @@ public class Validation {
                     return false;
                 }
             }
+            logger.debug("Path is valid");
             return true;
         }
     }

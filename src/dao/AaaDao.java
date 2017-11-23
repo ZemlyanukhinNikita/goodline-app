@@ -4,6 +4,7 @@ import domain.Accounting;
 import domain.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import service.MyException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,20 +16,15 @@ public class AaaDao {
     private Connection connection;
 
     public AaaDao(Connection connection) {
-        if (connection != null) {
-            this.connection = connection;
-        }
+        this.connection = connection;
     }
 
-    private Connection getConnection() {
-        return connection;
-    }
-
-    public User getDataFromTableUser(String login) {
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT * FROM USER WHERE LOGIN = ?")) {
+    public User getDataFromTableUser(String login) throws MyException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM USER WHERE LOGIN = ?")) {
             preparedStatement.setString(1, login);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
+                    logger.debug("request is successful");
                     return new User(resultSet.getLong("ID"),
                             resultSet.getString("LOGIN"),
                             resultSet.getString("PASSWORD"),
@@ -41,12 +37,12 @@ public class AaaDao {
 
         } catch (SQLException e) {
             logger.error("Database error", e);
-            return null;
+            throw new MyException("Database error");
         }
     }
 
-    public String getResourceFromTableResourceUsersRoles(User user, String role, String path) {
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement(
+    public String getResourceFromTableResourceUsersRoles(User user, String role, String path) throws MyException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT PATH FROM RESOURCE_USERS_ROLES WHERE USER_ID = ? AND ROLE = ? AND PATH || '.'" +
                         " LIKE LEFT(? ||'.', LENGTH(PATH || '.'))")) {
             preparedStatement.setLong(1, user.getId());
@@ -54,7 +50,7 @@ public class AaaDao {
             preparedStatement.setString(3, path);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-
+                    logger.debug("request is successful");
                     return resultSet.getString("PATH");
                 } else {
                     logger.error("request failed");
@@ -63,17 +59,18 @@ public class AaaDao {
             }
         } catch (SQLException e) {
             logger.error("Database error");
-            return null;
+            throw new MyException("Database error", e);
         }
     }
 
     public void setDataToTableAccounting(Accounting accounting) {
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement(
+        try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO ACCOUNTING (START_DATE, END_DATE, VOLUME) VALUES (?,?,?)")) {
             preparedStatement.setString(1, accounting.getDateStart());
             preparedStatement.setString(2, accounting.getDateEnd());
             preparedStatement.setLong(3, Long.parseLong(accounting.getVolume()));
             preparedStatement.executeUpdate();
+            logger.debug("data successfully adding");
         } catch (SQLException e) {
             logger.error("request failed", e);
         }
