@@ -64,6 +64,8 @@ test "-l Vasya -p qwerty -r WRIRE -pt A.B" 3
 test "-l Vasya123 -p 123 -r READ -pt DDD" 0
 
 #По скольку это последний тест, можем переопределить переменные окружения
+env LOGIN=admin1
+env PASSWORD=db_h2_17
 setenv LOGIN=admin1
 setenv PASSWORD=db_h2_17
 test "" 255
