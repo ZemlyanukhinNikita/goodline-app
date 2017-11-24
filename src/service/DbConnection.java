@@ -17,8 +17,8 @@ public class DbConnection {
     private static final String PATH_TO_PROPERTIES = "/config.properties";
     private static final String DRIVER = "driver";
     private static final String URL = "url";
-    private static final String LOGIN = "login";
-    private static final String PASSWORD = "password";
+    private static final String LOGIN = "LOGIN";
+    private static final String PASSWORD = "PASSWORD";
 
     public Connection getDbConnection() throws MyException {
         //инициализируем специальный объект Properties
