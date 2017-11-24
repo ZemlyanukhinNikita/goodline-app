@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class.getName());
 
-    public static void main(String[] args) throws ParseException, SQLException, MyException {
+    public static void main(String[] args) throws SQLException, ParseException {
         logger.debug("Start application.");
         ArrayList<Accounting> accounting = new ArrayList<>();
 
@@ -22,12 +22,8 @@ public class Main {
         UserData userData = cmdParser.cliParse(args);
         DbConnection dBconnection = new DbConnection();
         int systemExitCode = 0;
-        dBconnection.doMigration();
         try (Connection connection = dBconnection.getDbConnection()) {
-            if (connection == null) {
-                logger.error("Connection failed");
-                System.exit(255);
-            }
+            dBconnection.doMigration();
             AaaDao aaaDao = new AaaDao(dBconnection.getDbConnection());
             Validation validation = new Validation();
             Hash hash = new Hash();
@@ -54,9 +50,9 @@ public class Main {
                 cmdParser.printHelp();
             }
 
-        } catch (SQLException e) {
+        } catch (MyException e) {
             logger.error("Database error", e);
-            throw new MyException("Database error", e);
+            System.exit(255);
         }
         logger.debug("Application is finished");
         System.exit(systemExitCode);

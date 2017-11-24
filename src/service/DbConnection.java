@@ -20,11 +20,11 @@ public class DbConnection {
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
 
-    public Connection getDbConnection() {
+    public Connection getDbConnection() throws MyException {
         //инициализируем специальный объект Properties
         //типа Hashtable для удобной работы с данными
         Properties prop = new Properties();
-        try(InputStream fileInputStream = this.getClass().getResourceAsStream(PATH_TO_PROPERTIES))  {
+        try (InputStream fileInputStream = this.getClass().getResourceAsStream(PATH_TO_PROPERTIES)) {
             prop.load(fileInputStream);
             String driver = prop.getProperty(DRIVER);
             String url = prop.getProperty(URL);
@@ -33,7 +33,7 @@ public class DbConnection {
         } catch (ClassNotFoundException | SQLException e) {
             logger.error("Class not found ", e);
             logger.error("No connection to the database.");
-            return null;
+            throw new MyException("Database error", e);
         } catch (IOException e) {
             logger.error("File not found ", e);
             logger.error("No connection to the database.");
@@ -41,11 +41,11 @@ public class DbConnection {
         }
     }
 
-    public void doMigration() {
+    public void doMigration() throws MyException {
         //инициализируем специальный объект Properties
         //типа Hashtable для удобной работы с данными
         Properties prop = new Properties();
-        try(InputStream fileInputStream = this.getClass().getResourceAsStream(PATH_TO_PROPERTIES)) {
+        try (InputStream fileInputStream = this.getClass().getResourceAsStream(PATH_TO_PROPERTIES)) {
             prop.load(fileInputStream);
             String url = prop.getProperty(URL);
             // Create the Flyway instance
@@ -57,6 +57,10 @@ public class DbConnection {
             flyway.migrate();
         } catch (IOException e) {
             logger.error("File not found ", e);
+
+        } catch (Exception e) {
+            logger.error("No connection to the database.");
+            throw new MyException("Database error", e);
         }
     }
 }
