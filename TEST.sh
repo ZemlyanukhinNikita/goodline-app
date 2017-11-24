@@ -64,8 +64,8 @@ test "-l Vasya -p qwerty -r WRIRE -pt A.B" 3
 test "-l Vasya123 -p 123 -r READ -pt DDD" 0
 
 #По скольку это последний тест, можем переопределить переменные окружения
-export LOGIN=admin1
-export PASSWORD=db_h2_17
+LOGIN=admin1
+PASSWORD=db_h2_17
 test "" 255
 
 if [[ $counter -eq 0 ]]; then
