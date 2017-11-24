@@ -68,6 +68,8 @@ env LOGIN=admin1
 env PASSWORD=db_h2_17
 setenv LOGIN=admin1
 setenv PASSWORD=db_h2_17
+LOGIN=admin1
+PASSWORD=db_h2_17
 test "" 255
 
 if [[ $counter -eq 0 ]]; then
