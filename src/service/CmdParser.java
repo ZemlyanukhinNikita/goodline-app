@@ -1,10 +1,12 @@
 package service;
 
 import org.apache.commons.cli.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CmdParser {
     private Options options = new Options();
-
+    private static final Logger logger = LogManager.getLogger(CmdParser.class.getName());
     public CmdParser() {
         options
                 .addOption("l", true, "User login")
@@ -34,6 +36,8 @@ public class CmdParser {
         userData.setDateStart(cmd.getOptionValue("ds"));
         userData.setDateEnd(cmd.getOptionValue("de"));
         userData.setVolume(cmd.getOptionValue("v"));
+
+        logger.debug("You entered data {}",userData.toString());
 
         return userData;
     }

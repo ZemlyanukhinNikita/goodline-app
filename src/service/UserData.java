@@ -79,4 +79,16 @@ public class UserData {
         this.volume = volume;
     }
 
+    @Override
+    public String toString() {
+        return "User Data as {" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", path='" + path + '\'' +
+                ", dateStart='" + dateStart + '\'' +
+                ", dateEnd='" + dateEnd + '\'' +
+                ", volume='" + volume + '\'' +
+                '}';
+    }
 }
