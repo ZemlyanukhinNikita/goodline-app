@@ -19,7 +19,7 @@ public class Main {
         ArrayList<Accounting> accounting = new ArrayList<>();
 
         CmdParserService cmdParserService = new CmdParserService();
-        UserDataService userDataService = cmdParserService.cliParse(args);
+        UserData userData = cmdParserService.cliParse(args);
         DbConnectionService dBconnection = new DbConnectionService();
         int systemExitCode = 0;
         try (Connection connection = dBconnection.getDbConnection()) {
@@ -29,24 +29,24 @@ public class Main {
             HashService hashService = new HashService();
             AaaService aaaService = new AaaService(aaaDao, validationService, hashService);
 
-            if (userDataService.isAuthenticated()) {
+            if (userData.isAuthenticated()) {
                 logger.debug("Authentication is performed.");
-                systemExitCode = aaaService.authenticate(userDataService.getLogin(), userDataService.getPassword());
+                systemExitCode = aaaService.authenticate(userData.getLogin(), userData.getPassword());
             }
 
-            if (systemExitCode == 0 && userDataService.isAuthorized()) {
+            if (systemExitCode == 0 && userData.isAuthorized()) {
                 logger.debug("Authorization is performed.");
-                systemExitCode = aaaService.authorize(userDataService.getLogin(), userDataService.getRole(),
-                        userDataService.getPath());
+                systemExitCode = aaaService.authorize(userData.getLogin(), userData.getRole(),
+                        userData.getPath());
             }
 
-            if (systemExitCode == 0 && userDataService.isAccounted()) {
+            if (systemExitCode == 0 && userData.isAccounted()) {
                 logger.debug("Accounting is performed.");
-                systemExitCode = aaaService.account(userDataService.getDateStart(), userDataService.getDateEnd(),
-                        userDataService.getVolume(), accounting);
+                systemExitCode = aaaService.account(userData.getDateStart(), userData.getDateEnd(),
+                        userData.getVolume(), accounting);
             }
 
-            if (!userDataService.isAuthenticated()) {
+            if (!userData.isAuthenticated()) {
                 logger.debug("Print help.");
                 cmdParserService.printHelp();
             }

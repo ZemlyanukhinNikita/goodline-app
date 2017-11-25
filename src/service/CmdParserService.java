@@ -25,21 +25,21 @@ public class CmdParserService {
         formatter.printHelp("main.Main", options);
     }
 
-    public UserDataService cliParse(String[] args) throws ParseException {
+    public UserData cliParse(String[] args) throws ParseException {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args);
 
-        UserDataService userDataService = new UserDataService();
-        userDataService.setLogin(cmd.getOptionValue("l"));
-        userDataService.setPassword(cmd.getOptionValue("p"));
-        userDataService.setRole(cmd.getOptionValue("r"));
-        userDataService.setPath(cmd.getOptionValue("pt"));
-        userDataService.setDateStart(cmd.getOptionValue("ds"));
-        userDataService.setDateEnd(cmd.getOptionValue("de"));
-        userDataService.setVolume(cmd.getOptionValue("v"));
+        UserData userData = new UserData();
+        userData.setLogin(cmd.getOptionValue("l"));
+        userData.setPassword(cmd.getOptionValue("p"));
+        userData.setRole(cmd.getOptionValue("r"));
+        userData.setPath(cmd.getOptionValue("pt"));
+        userData.setDateStart(cmd.getOptionValue("ds"));
+        userData.setDateEnd(cmd.getOptionValue("de"));
+        userData.setVolume(cmd.getOptionValue("v"));
 
-        logger.debug("You entered data {}", userDataService.toString());
+        logger.debug("You entered data {}", userData.toString());
 
-        return userDataService;
+        return userData;
     }
 }
