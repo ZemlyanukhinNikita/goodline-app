@@ -7,8 +7,8 @@ import java.time.LocalDate;
 
 import static java.lang.Integer.parseInt;
 
-public class Validation {
-    private static final Logger logger = LogManager.getLogger(Validation.class.getName());
+public class ValidationService {
+    private static final Logger logger = LogManager.getLogger(ValidationService.class.getName());
 
     boolean isValidVolume(String v) {
         try {

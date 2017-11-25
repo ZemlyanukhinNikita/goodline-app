@@ -12,11 +12,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DbConnection {
-    private static final Logger logger = LogManager.getLogger(DbConnection.class.getName());
+public class DbConnectionService {
+    private static final Logger logger = LogManager.getLogger(DbConnectionService.class.getName());
     private static final String PATH_TO_PROPERTIES = "/config.properties";
-    private static final String DRIVER = "driver";
-    private static final String URL = "url";
+    private static final String DRIVER = "DRIVER";
+    private static final String URL = "URL";
     private static final String LOGIN = "LOGIN";
     private static final String PASSWORD = "PASSWORD";
 
@@ -37,7 +37,7 @@ public class DbConnection {
         } catch (IOException e) {
             logger.error("File not found ", e);
             logger.error("No connection to the database.");
-            return null;
+            throw new MyException("File not found", e);
         }
     }
 

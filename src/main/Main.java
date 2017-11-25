@@ -18,36 +18,37 @@ public class Main {
         logger.debug("Start application.");
         ArrayList<Accounting> accounting = new ArrayList<>();
 
-        CmdParser cmdParser = new CmdParser();
-        UserData userData = cmdParser.cliParse(args);
-        DbConnection dBconnection = new DbConnection();
+        CmdParserService cmdParserService = new CmdParserService();
+        UserDataService userDataService = cmdParserService.cliParse(args);
+        DbConnectionService dBconnection = new DbConnectionService();
         int systemExitCode = 0;
         try (Connection connection = dBconnection.getDbConnection()) {
             dBconnection.doMigration();
-            AaaDao aaaDao = new AaaDao(dBconnection.getDbConnection());
-            Validation validation = new Validation();
-            Hash hash = new Hash();
-            Aaa aaa = new Aaa(aaaDao, validation, hash);
+            AaaDao aaaDao = new AaaDao(connection);
+            ValidationService validationService = new ValidationService();
+            HashService hashService = new HashService();
+            AaaService aaaService = new AaaService(aaaDao, validationService, hashService);
 
-            if (userData.isAuthenticated()) {
+            if (userDataService.isAuthenticated()) {
                 logger.debug("Authentication is performed.");
-                systemExitCode = aaa.authenticate(userData.getLogin(), userData.getPassword());
+                systemExitCode = aaaService.authenticate(userDataService.getLogin(), userDataService.getPassword());
             }
 
-            if (systemExitCode == 0 && userData.isAuthorized()) {
+            if (systemExitCode == 0 && userDataService.isAuthorized()) {
                 logger.debug("Authorization is performed.");
-                systemExitCode = aaa.authorize(userData.getLogin(), userData.getRole(), userData.getPath());
+                systemExitCode = aaaService.authorize(userDataService.getLogin(), userDataService.getRole(),
+                        userDataService.getPath());
             }
 
-            if (systemExitCode == 0 && userData.isAccounted()) {
+            if (systemExitCode == 0 && userDataService.isAccounted()) {
                 logger.debug("Accounting is performed.");
-                systemExitCode = aaa.account(userData.getDateStart(), userData.getDateEnd(),
-                        userData.getVolume(), accounting);
+                systemExitCode = aaaService.account(userDataService.getDateStart(), userDataService.getDateEnd(),
+                        userDataService.getVolume(), accounting);
             }
 
-            if (!userData.isAuthenticated()) {
+            if (!userDataService.isAuthenticated()) {
                 logger.debug("Print help.");
-                cmdParser.printHelp();
+                cmdParserService.printHelp();
             }
 
         } catch (MyException e) {

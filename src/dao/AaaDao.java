@@ -1,6 +1,7 @@
 package dao;
 
 import domain.Accounting;
+import domain.ResourceUsersRoles;
 import domain.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,9 +42,9 @@ public class AaaDao {
         }
     }
 
-    public String getResourceFromTableResourceUsersRoles(User user, String role, String path) throws MyException {
+    public ResourceUsersRoles getResourceFromTableResourceUsersRoles(User user, String role, String path) throws MyException {
         try (PreparedStatement prsmt = connection.prepareStatement(
-                "SELECT PATH FROM RESOURCE_USERS_ROLES WHERE USER_ID = ? AND ROLE = ? AND PATH || '.'" +
+                "SELECT * FROM RESOURCE_USERS_ROLES WHERE USER_ID = ? AND ROLE = ? AND PATH || '.'" +
                         " LIKE LEFT(? ||'.', LENGTH(PATH || '.'))")) {
             prsmt.setLong(1, user.getId());
             prsmt.setString(2, role);
@@ -51,7 +52,10 @@ public class AaaDao {
             try (ResultSet rs = prsmt.executeQuery()) {
                 if (rs.next()) {
                     logger.debug("request is successful");
-                    return rs.getString("PATH");
+                    return new ResourceUsersRoles(rs.getLong("ID"),
+                            rs.getLong("USER_ID"),
+                            rs.getString("ROLE"),
+                            rs.getString("PATH"));
                 } else {
                     logger.error("request failed");
                     return null;

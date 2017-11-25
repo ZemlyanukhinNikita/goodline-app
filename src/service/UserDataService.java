@@ -1,6 +1,6 @@
 package service;
 
-public class UserData {
+public class UserDataService {
     private String login;
     private String password;
     private String role;

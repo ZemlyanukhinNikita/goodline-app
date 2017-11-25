@@ -9,16 +9,16 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-public class Aaa {
-    private static final Logger logger = LogManager.getLogger(Aaa.class.getName());
+public class AaaService {
+    private static final Logger logger = LogManager.getLogger(AaaService.class.getName());
     private AaaDao aaaDao;
-    private Validation validation;
-    private Hash hash;
+    private ValidationService validationService;
+    private HashService hashService;
 
-    public Aaa(AaaDao aaaDao, Validation validation, Hash hash) {
+    public AaaService(AaaDao aaaDao, ValidationService validationService, HashService hashService) {
         this.aaaDao = aaaDao;
-        this.validation = validation;
-        this.hash = hash;
+        this.validationService = validationService;
+        this.hashService = hashService;
     }
 
     private User getUser(String login) throws MyException {
@@ -30,7 +30,7 @@ public class Aaa {
         if (aaaDao.getDataFromTableUser(login) == null) {
             logger.error("login {} not found in the database", login);
             return 1;
-        } else if (!hash.isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
+        } else if (!hashService.isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
             logger.error("password {} for User {} not found in the database", pass, login);
             return 2;
         } else {
@@ -59,8 +59,8 @@ public class Aaa {
     public int account(String dateStart, String dateEnd, String volume,
                        ArrayList<Accounting> accounting) {
         //Проверка валидности объема и дат.
-        if ((!validation.isValidVolume(volume)) || (!validation.isValidDate(dateStart))
-                || (!validation.isValidDate(dateEnd))) {
+        if ((!validationService.isValidVolume(volume)) || (!validationService.isValidDate(dateStart))
+                || (!validationService.isValidDate(dateEnd))) {
             logger.error("Invalid dates or volume");
             return 5;
         } else {

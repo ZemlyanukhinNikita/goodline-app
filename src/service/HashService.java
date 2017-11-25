@@ -9,8 +9,8 @@ import java.security.SecureRandom;
 
 import static java.lang.Integer.toHexString;
 
-public class Hash {
-    private static final Logger logger = LogManager.getLogger(Hash.class.getName());
+public class HashService {
+    private static final Logger logger = LogManager.getLogger(HashService.class.getName());
 
     private String getHash(String source) {
         //Создаем экземпляр класса
@@ -38,7 +38,7 @@ public class Hash {
                 hexString.append(toHexString(0xFF & aMessageDigest));
             }
         } catch (NoSuchAlgorithmException e) {
-            logger.error("Hash isn`t generate", e);
+            logger.error("HashService isn`t generate", e);
             return null;
         }
         logger.debug("return hash password");
