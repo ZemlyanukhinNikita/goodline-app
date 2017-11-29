@@ -1,6 +1,5 @@
 package service;
 
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.flywaydb.core.Flyway;
@@ -14,7 +13,7 @@ import java.util.Properties;
 
 public class DbConnectionService {
     private static final Logger logger = LogManager.getLogger(DbConnectionService.class.getName());
-    private static final String PATH_TO_PROPERTIES = "/config.properties";
+    private static final String PATH_TO_PROPERTIES = "../config.properties";
     private static final String DRIVER = "DRIVER";
     private static final String URL = "URL";
     private static final String LOGIN = "LOGIN";

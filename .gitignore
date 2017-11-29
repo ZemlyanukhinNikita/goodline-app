@@ -6,3 +6,5 @@ Test.java
 aaa.h2.db
 aaa.log
 aaa.trace.db
+aaaService.log
+dependency-reduced-pom.xml

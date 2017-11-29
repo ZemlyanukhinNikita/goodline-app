@@ -22,7 +22,7 @@ public class CmdParserService {
 
     public void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("main.Main", options);
+        formatter.printHelp("Main", options);
     }
 
     public UserData cliParse(String[] args) throws ParseException {

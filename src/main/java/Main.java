@@ -1,5 +1,3 @@
-package main;
-
 import dao.AaaDao;
 import domain.Accounting;
 import org.apache.commons.cli.ParseException;
