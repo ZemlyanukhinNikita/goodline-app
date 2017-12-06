@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class helpTest {
+public class HelpTest {
     private UserData userData;
     private int systemExitCode;
     private CmdParserService cmdParserService;

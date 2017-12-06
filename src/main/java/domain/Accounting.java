@@ -10,6 +10,9 @@ public class Accounting {
         this.dateEnd = dateEnd;
         this.volume = volume;
     }
+    public Accounting() {
+
+    }
 
     public String getDateStart() {
         return dateStart;
@@ -33,5 +36,14 @@ public class Accounting {
 
     public void setVolume(String volume) {
         this.volume = volume;
+    }
+
+    @Override
+    public String toString() {
+        return "Accounting{" +
+                "dateStart='" + dateStart + '\'' +
+                ", dateEnd='" + dateEnd + '\'' +
+                ", volume='" + volume + '\'' +
+                '}';
     }
 }
