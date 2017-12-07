@@ -19,7 +19,6 @@ public class AaaServiceTest {
     private AccountingService accountingService;
     private int systemExitCode;
     private ArrayList<Accounting> accounting;
-    private Accounting account;
 
     @Before
     public void setUp() throws Exception {
@@ -30,8 +29,6 @@ public class AaaServiceTest {
         authorizationService = new AuthorizationService(aaaDao);
         accountingService = new AccountingService(aaaDao,validationService);
         accounting = new ArrayList<>();
-        account = mock(Accounting.class);
-
     }
 
     private int authenticationSystemExitCode(String login, String password) throws MyException {
@@ -46,6 +43,13 @@ public class AaaServiceTest {
         return accountingService.account(startDate,endDate,volume, accounting);
     }
 
+    @Test(expected = MyException.class)
+    public void authenticationEmptyLogin() throws MyException {
+        when(aaaDao.getDataFromTableUser("")).thenThrow(new MyException("Empty login"));
+        authenticationSystemExitCode("","");
+        verify(aaaDao).getDataFromTableUser("");
+    }
+
     @Test
     public void authenticationInvalidLogin() throws Exception {
         systemExitCode = authenticationSystemExitCode("xxx", "qwerty");
@@ -53,10 +57,10 @@ public class AaaServiceTest {
         verify(aaaDao,atLeast(1)).getDataFromTableUser("xxx");
     }
 
-
     @Test
     public void authenticationInvalidPassword() throws Exception {
-        User user = new User(1L, "Vasya", "82d8b0e268ddc216d347bcb95b158d92", "8169f7411b8f74150ad38d7d6b0435d");
+        User user = new User(1L, "Vasya", "82d8b0e268ddc216d347bcb95b158d92",
+                "8169f7411b8f74150ad38d7d6b0435d");
         when(aaaDao.getDataFromTableUser("Vasya")).thenReturn(user);
         systemExitCode = authenticationSystemExitCode("Vasya", "111");
         assertEquals(2, systemExitCode);
@@ -65,7 +69,8 @@ public class AaaServiceTest {
 
     @Test
     public void authenticationSuccess() throws Exception {
-        User user = new User(1L, "Vasya", "82d8b0e268ddc216d347bcb95b158d92", "8169f7411b8f74150ad38d7d6b0435d");
+        User user = new User(1L, "Vasya", "82d8b0e268ddc216d347bcb95b158d92",
+                "8169f7411b8f74150ad38d7d6b0435d");
         when(aaaDao.getDataFromTableUser("Vasya")).thenReturn(user);
         systemExitCode = authenticationSystemExitCode("Vasya", "qwerty");
         assertEquals(0, systemExitCode);
@@ -73,6 +78,13 @@ public class AaaServiceTest {
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Test(expected = MyException.class)
+    public void authorizationEmptyResource() throws MyException {
+        when(aaaDao.getResourceFromTableResourceUsersRoles(null, "READ", "")).thenThrow(new MyException("Empty resource"));
+        authorizationSystemExitCode("READ","");
+        verify(aaaDao).getResourceFromTableResourceUsersRoles(null,"","");
+    }
 
     @Test
     public void authorizationInvalidRole() throws Exception {
