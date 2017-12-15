@@ -1,12 +1,11 @@
 package service;
 
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.cli.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
+@Log4j2
 public class CmdParserService {
     private Options options = new Options();
-    private static final Logger logger = LogManager.getLogger(CmdParserService.class.getName());
 
     public CmdParserService() {
         options
@@ -38,7 +37,7 @@ public class CmdParserService {
         userData.setDateEnd(cmd.getOptionValue("de"));
         userData.setVolume(cmd.getOptionValue("v"));
 
-        logger.debug("You entered data {}", userData.toString());
+        log.debug("You entered data {}", userData.toString());
 
         return userData;
     }

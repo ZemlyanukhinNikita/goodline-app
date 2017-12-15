@@ -3,11 +3,10 @@ package service;
 import dao.AaaDao;
 import domain.Roles;
 import domain.User;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class AuthorizationService {
-    private static final Logger logger = LogManager.getLogger(AuthorizationService.class.getName());
     private AaaDao aaaDao;
 
     public AuthorizationService(AaaDao aaaDao) {
@@ -22,15 +21,15 @@ public class AuthorizationService {
 
         User user = getUser(login);
         if (!Roles.isValidRole(role)) {
-            logger.error("role {} invalid", role);
+            log.error("role {} invalid", role);
             return 3;
         }
 
         if (aaaDao.getResourceFromTableResourceUsersRoles(user, role, resource) == null) {
-            logger.error("resource {} not found by User {}", resource, login);
+            log.error("resource {} not found by User {}", resource, login);
             return 4;
         } else {
-            logger.debug("Authorization is successful");
+            log.debug("Authorization is successful");
             return 0;
         }
     }

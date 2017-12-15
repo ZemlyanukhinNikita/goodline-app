@@ -2,11 +2,10 @@ package service;
 
 import dao.AaaDao;
 import domain.User;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class AuthenticationService {
-    private static final Logger logger = LogManager.getLogger(AuthenticationService.class.getName());
     private HashService hashService;
     private AaaDao aaaDao;
 
@@ -22,13 +21,13 @@ public class AuthenticationService {
     public int authenticate(String login, String pass) throws MyException {
         User user = getUser(login);
         if (aaaDao.getDataFromTableUser(login) == null) {
-            logger.error("login {} not found in the database", login);
+            log.error("login {} not found in the database", login);
             return 1;
         } else if (!hashService.isRightHashPassword(pass, user.getPassword(), user.getSalt())) {
-            logger.error("password {} for User {} not found in the database", pass, login);
+            log.error("password {} for User {} not found in the database", pass, login);
             return 2;
         } else {
-            logger.debug("Authentication is successful");
+            log.debug("Authentication is successful");
             return 0;
         }
     }

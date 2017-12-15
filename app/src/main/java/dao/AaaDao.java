@@ -3,8 +3,7 @@ package dao;
 import domain.Accounting;
 import domain.ResourceUsersRoles;
 import domain.User;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import service.MyException;
 
 import java.sql.Connection;
@@ -12,8 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Log4j2
 public class AaaDao {
-    private static final Logger logger = LogManager.getLogger(AaaDao.class.getName());
     private Connection connection;
 
     public AaaDao(Connection connection) {
@@ -25,19 +24,19 @@ public class AaaDao {
             prsmt.setString(1, login);
             try (ResultSet rs = prsmt.executeQuery()) {
                 if (rs.next()) {
-                    logger.debug("request is successful");
+                    log.debug("request is successful");
                     return new User(rs.getLong("ID"),
                             rs.getString("LOGIN"),
                             rs.getString("PASSWORD"),
                             rs.getString("SALT"));
                 } else {
-                    logger.error("request failed");
+                    log.error("request failed");
                     return null;
                 }
             }
 
         } catch (SQLException e) {
-            logger.error("Database error", e);
+            log.error("Database error", e);
             throw new MyException("Database error");
         }
     }
@@ -51,18 +50,18 @@ public class AaaDao {
             prsmt.setString(3, path);
             try (ResultSet rs = prsmt.executeQuery()) {
                 if (rs.next()) {
-                    logger.debug("request is successful");
+                    log.debug("request is successful");
                     return new ResourceUsersRoles(rs.getLong("ID"),
                             rs.getLong("USER_ID"),
                             rs.getString("ROLE"),
                             rs.getString("PATH"));
                 } else {
-                    logger.error("request failed");
+                    log.error("request failed");
                     return null;
                 }
             }
         } catch (SQLException e) {
-            logger.error("Database error");
+            log.error("Database error");
             throw new MyException("Database error", e);
         }
     }
@@ -74,9 +73,9 @@ public class AaaDao {
             prsmt.setString(2, accounting.getDateEnd());
             prsmt.setLong(3, Long.parseLong(accounting.getVolume()));
             prsmt.executeUpdate();
-            logger.debug("data successfully adding");
+            log.debug("data successfully adding");
         } catch (SQLException e) {
-            logger.error("request failed", e);
+            log.error("request failed", e);
         }
     }
 }

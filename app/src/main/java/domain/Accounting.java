@@ -1,5 +1,8 @@
 package domain;
 
+@lombok.Setter
+@lombok.Getter
+@lombok.ToString
 public class Accounting {
     private String dateStart;
     private String dateEnd;
@@ -10,40 +13,9 @@ public class Accounting {
         this.dateEnd = dateEnd;
         this.volume = volume;
     }
+
     public Accounting() {
 
     }
 
-    public String getDateStart() {
-        return dateStart;
-    }
-
-    public void setDateStart(String dateStart) {
-        this.dateStart = dateStart;
-    }
-
-    public String getDateEnd() {
-        return dateEnd;
-    }
-
-    public void setDateEnd(String dateEnd) {
-        this.dateEnd = dateEnd;
-    }
-
-    public String getVolume() {
-        return volume;
-    }
-
-    public void setVolume(String volume) {
-        this.volume = volume;
-    }
-
-    @Override
-    public String toString() {
-        return "Accounting{" +
-                "dateStart='" + dateStart + '\'' +
-                ", dateEnd='" + dateEnd + '\'' +
-                ", volume='" + volume + '\'' +
-                '}';
-    }
 }

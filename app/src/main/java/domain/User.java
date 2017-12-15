@@ -1,5 +1,7 @@
 package domain;
 
+@lombok.Getter
+@lombok.Setter
 public class User {
     private Long id;
     private String login;
@@ -13,36 +15,5 @@ public class User {
         this.salt = salt;
     }
 
-    public String getSalt() {
-        return salt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 
 }

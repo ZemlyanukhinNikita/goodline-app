@@ -1,7 +1,6 @@
 package service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -9,8 +8,8 @@ import java.security.SecureRandom;
 
 import static java.lang.Integer.toHexString;
 
+@Log4j2
 public class HashService {
-    private static final Logger logger = LogManager.getLogger(HashService.class.getName());
 
     private String getHash(String source) {
         //Создаем экземпляр класса
@@ -38,10 +37,10 @@ public class HashService {
                 hexString.append(toHexString(0xFF & aMessageDigest));
             }
         } catch (NoSuchAlgorithmException e) {
-            logger.error("HashService isn`t generate", e);
+            log.error("HashService isn`t generate", e);
             return null;
         }
-        logger.debug("return hash password");
+        log.debug("return hash password");
         return hexString.toString();
     }
 
@@ -64,7 +63,7 @@ public class HashService {
         for (byte aSalt : salt) {
             s = String.valueOf(hexString.append(toHexString(0xFF & aSalt)));
         }
-        logger.debug("return hash salt");
+        log.debug("return hash salt");
         return s;
     }
 

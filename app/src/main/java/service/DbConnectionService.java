@@ -1,7 +1,6 @@
 package service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.flywaydb.core.Flyway;
 
 import java.io.IOException;
@@ -11,8 +10,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+@Log4j2
 public class DbConnectionService {
-    private static final Logger logger = LogManager.getLogger(DbConnectionService.class.getName());
     private static final String PATH_TO_PROPERTIES = "../config.properties";
     private static final String DRIVER = "DRIVER";
     private static final String URL = "URL";
@@ -30,12 +29,12 @@ public class DbConnectionService {
             Class.forName(driver);
             return DriverManager.getConnection(url, System.getenv(LOGIN), System.getenv(PASSWORD));
         } catch (ClassNotFoundException | SQLException e) {
-            logger.error("Class not found ", e);
-            logger.error("No connection to the database.");
+            log.error("Class not found ", e);
+            log.error("No connection to the database.");
             throw new MyException("Database error", e);
         } catch (IOException e) {
-            logger.error("File not found ", e);
-            logger.error("No connection to the database.");
+            log.error("File not found ", e);
+            log.error("No connection to the database.");
             throw new MyException("File not found", e);
         }
     }
@@ -52,13 +51,13 @@ public class DbConnectionService {
             // Point it to the database
             flyway.setDataSource(url, System.getenv(LOGIN), System.getenv(PASSWORD));
             // Start the migration
-            logger.debug("Do migrations");
+            log.debug("Do migrations");
             flyway.migrate();
         } catch (IOException e) {
-            logger.error("File not found ", e);
+            log.error("File not found ", e);
 
         } catch (Exception e) {
-            logger.error("No connection to the database.");
+            log.error("No connection to the database.");
             throw new MyException("Database error", e);
         }
     }

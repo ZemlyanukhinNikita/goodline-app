@@ -1,19 +1,18 @@
 import dao.AaaDao;
 import domain.Accounting;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.cli.ParseException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import service.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+@Log4j2
 public class Main {
-    private static final Logger logger = LogManager.getLogger(Main.class.getName());
 
     public static void main(String[] args) throws SQLException, ParseException {
-        logger.debug("Start application.");
+        log.debug("Start application.");
         ArrayList<Accounting> accounting = new ArrayList<>();
 
         CmdParserService cmdParserService = new CmdParserService();
@@ -25,37 +24,37 @@ public class Main {
             AaaDao aaaDao = new AaaDao(connection);
             ValidationService validationService = new ValidationService();
             HashService hashService = new HashService();
-            AuthenticationService authenticationService = new AuthenticationService(hashService,aaaDao);
+            AuthenticationService authenticationService = new AuthenticationService(hashService, aaaDao);
             AuthorizationService authorizationService = new AuthorizationService(aaaDao);
-            AccountingService accountingService = new AccountingService(aaaDao,validationService);
+            AccountingService accountingService = new AccountingService(aaaDao, validationService);
 
             if (userData.isAuthenticated()) {
-                logger.debug("Authentication is performed.");
+                log.debug("Authentication is performed.");
                 systemExitCode = authenticationService.authenticate(userData.getLogin(), userData.getPassword());
             }
 
             if (systemExitCode == 0 && userData.isAuthorized()) {
-                logger.debug("Authorization is performed.");
+                log.debug("Authorization is performed.");
                 systemExitCode = authorizationService.authorize(userData.getLogin(), userData.getRole(),
                         userData.getPath());
             }
 
             if (systemExitCode == 0 && userData.isAccounted()) {
-                logger.debug("Accounting is performed.");
+                log.debug("Accounting is performed.");
                 systemExitCode = accountingService.account(userData.getDateStart(), userData.getDateEnd(),
                         userData.getVolume(), accounting);
             }
 
             if (!userData.isAuthenticated()) {
-                logger.debug("Print help.");
+                log.debug("Print help.");
                 cmdParserService.printHelp();
             }
 
         } catch (MyException e) {
-            logger.error("Database error", e);
+            log.error("Database error", e);
             System.exit(255);
         }
-        logger.debug("Application is finished");
+        log.debug("Application is finished");
         System.exit(systemExitCode);
     }
 }

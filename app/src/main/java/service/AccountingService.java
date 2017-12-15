@@ -2,13 +2,12 @@ package service;
 
 import dao.AaaDao;
 import domain.Accounting;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.ArrayList;
 
+@Log4j2
 public class AccountingService {
-    private static final Logger logger = LogManager.getLogger(AccountingService.class.getName());
     private AaaDao aaaDao;
     private ValidationService validationService;
 
@@ -22,13 +21,13 @@ public class AccountingService {
         //Проверка валидности объема и дат.
         if ((!validationService.isValidVolume(volume)) || (!validationService.isValidDate(dateStart))
                 || (!validationService.isValidDate(dateEnd))) {
-            logger.error("Invalid dates or volume");
+            log.error("Invalid dates or volume");
             return 5;
         } else {
-            Accounting account = new Accounting(dateStart,dateEnd,volume);
+            Accounting account = new Accounting(dateStart, dateEnd, volume);
             accounting.add(account);
             aaaDao.setDataToTableAccounting(account);
-            logger.debug("Accounting is successful");
+            log.debug("Accounting is successful");
             return 0;
         }
     }
