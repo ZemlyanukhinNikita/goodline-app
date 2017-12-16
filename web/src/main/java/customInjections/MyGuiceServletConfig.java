@@ -21,8 +21,8 @@ public class MyGuiceServletConfig extends GuiceServletContextListener {
                 serve("/echo/get").with(EchoServlet.class);
                 serve("/echo/post").with(EchoServlet.class);
                 serve("/ajax/user").with(UserServlet.class);
-                serve("/ajax/authority").with(ActivityServlet.class);
-                serve("/ajax/activity").with(AuthorityServlet.class);
+                serve("/ajax/activity").with(ActivityServlet.class);
+                serve("/ajax/authority").with(AuthorityServlet.class);
                 bind(EchoServlet.class).in(Singleton.class);
                 bind(UserServlet.class).in(Singleton.class);
                 bind(ActivityServlet.class).in(Singleton.class);
