@@ -25,7 +25,7 @@
 | 4.AuthorityServlet       |  5 минут                     |   	      2 минуты           |
 | 5.ActivityServlet	      |  5 минут                     | 	      2 минуты           |
 | 6.Log4JTypeListener  |  5 минут                     | 	      2 минуты           |
-| 7.Log4JMembersInjector                |  5 минут           43 минуты          | 	                 |
+| 7.Log4JMembersInjector                |  5 минут                    | 	   43 минуты               |
 | 8.Проинжектить логгеры                |  30 минут                     | 	  7 минут               |
 | 9.pom.xml Lombok              |  60 минут                     | 	    15 минут             |
 | 10.Roadmap6.md в файл README                |  2 минуты                     | 1 минута	                 |
