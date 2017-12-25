@@ -12,6 +12,7 @@ public class InitializeListener implements javax.servlet.ServletContextListener 
         try {
             dbConnectionService.doMigration();
         } catch (MyException e) {
+            throw new RuntimeException("Database error", e);
         }
     }
 
