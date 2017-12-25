@@ -1,4 +1,4 @@
-package customInjections;
+package customInjections.logger;
 
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;

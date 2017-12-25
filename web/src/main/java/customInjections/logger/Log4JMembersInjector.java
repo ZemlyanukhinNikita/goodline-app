@@ -1,4 +1,4 @@
-package customInjections;
+package customInjections.logger;
 
 import com.google.inject.MembersInjector;
 import org.apache.logging.log4j.LogManager;

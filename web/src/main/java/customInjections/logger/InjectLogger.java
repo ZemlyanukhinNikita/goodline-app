@@ -1,4 +1,4 @@
-package customInjections;
+package customInjections.logger;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
