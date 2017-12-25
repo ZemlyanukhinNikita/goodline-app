@@ -27,6 +27,8 @@
 
 [План работ №6](Roadmap6.md)
 
+[План работ №7](Roadmap7.md)
+
 Также обязательным требованием является написание тестов. На данный момент приложение протестировано в системе **travis-ci.org** [![Build Status](https://travis-ci.org/ZemlyanukhinNikita/goodline-app.svg?branch=master)](https://travis-ci.org/ZemlyanukhinNikita/goodline-app) 
 
 ### Инструкция по сборке, запуску и тестированию приложения:
