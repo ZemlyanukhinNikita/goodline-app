@@ -17,7 +17,11 @@
     </filter-mapping>
 
     <listener>
-        <listener-class>customInjections.MyGuiceServletConfig</listener-class>
+        <listener-class>customInjections.di.MyGuiceServletConfig</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>customInjections.InitializeListener</listener-class>
     </listener>
 
 </web-app>

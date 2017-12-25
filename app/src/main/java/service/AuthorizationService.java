@@ -1,23 +1,28 @@
 package service;
 
-import dao.AaaDao;
+import dao.AuthenticationDao;
+import dao.AuthorizationDao;
 import domain.Roles;
 import domain.User;
 import lombok.extern.log4j.Log4j2;
 
+import java.io.IOException;
+
 @Log4j2
 public class AuthorizationService {
-    private AaaDao aaaDao;
+    private AuthorizationDao authorizationDao;
+    private AuthenticationDao authenticationDao;
 
-    public AuthorizationService(AaaDao aaaDao) {
-        this.aaaDao = aaaDao;
+    public AuthorizationService(AuthorizationDao authorizationDao, AuthenticationDao authenticationDao) {
+        this.authorizationDao = authorizationDao;
+        this.authenticationDao = authenticationDao;
     }
 
-    private User getUser(String login) throws MyException {
-        return aaaDao.getDataFromTableUser(login);
+    private User getUser(String login) throws MyException, IOException {
+        return authenticationDao.getDataFromTableUser(login);
     }
 
-    public int authorize(String login, String role, String resource) throws MyException {
+    public int authorize(String login, String role, String resource) throws MyException, IOException {
 
         User user = getUser(login);
         if (!Roles.isValidRole(role)) {
@@ -25,7 +30,7 @@ public class AuthorizationService {
             return 3;
         }
 
-        if (aaaDao.getResourceFromTableResourceUsersRoles(user, role, resource) == null) {
+        if (authorizationDao.getResourceFromTableResourceUsersRoles(user, role, resource) == null) {
             log.error("resource {} not found by User {}", resource, login);
             return 4;
         } else {

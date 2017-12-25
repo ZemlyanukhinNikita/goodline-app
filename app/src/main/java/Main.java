@@ -1,32 +1,35 @@
-import dao.AaaDao;
+import dao.AccountingDao;
+import dao.AuthenticationDao;
+import dao.AuthorizationDao;
 import domain.Accounting;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.cli.ParseException;
 import service.*;
 
-import java.sql.Connection;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 @Log4j2
 public class Main {
 
-    public static void main(String[] args) throws SQLException, ParseException {
+    public static void main(String[] args) throws SQLException, ParseException, IOException, MyException {
         log.debug("Start application.");
         ArrayList<Accounting> accounting = new ArrayList<>();
-
         CmdParserService cmdParserService = new CmdParserService();
         UserData userData = cmdParserService.cliParse(args);
         DbConnectionService dBconnection = new DbConnectionService();
         int systemExitCode = 0;
-        try (Connection connection = dBconnection.getDbConnection()) {
+        try {
             dBconnection.doMigration();
-            AaaDao aaaDao = new AaaDao(connection);
+            AuthenticationDao authenticationDao = new AuthenticationDao(dBconnection);
+            AuthorizationDao authorizationDao = new AuthorizationDao(dBconnection, authenticationDao);
+            AccountingDao accountingDao = new AccountingDao(dBconnection);
             ValidationService validationService = new ValidationService();
             HashService hashService = new HashService();
-            AuthenticationService authenticationService = new AuthenticationService(hashService, aaaDao);
-            AuthorizationService authorizationService = new AuthorizationService(aaaDao);
-            AccountingService accountingService = new AccountingService(aaaDao, validationService);
+            AuthenticationService authenticationService = new AuthenticationService(hashService, authenticationDao);
+            AuthorizationService authorizationService = new AuthorizationService(authorizationDao, authenticationDao);
+            AccountingService accountingService = new AccountingService(accountingDao, validationService);
 
             if (userData.isAuthenticated()) {
                 log.debug("Authentication is performed.");
@@ -41,15 +44,14 @@ public class Main {
 
             if (systemExitCode == 0 && userData.isAccounted()) {
                 log.debug("Accounting is performed.");
-                systemExitCode = accountingService.account(userData.getDateStart(), userData.getDateEnd(),
-                        userData.getVolume(), accounting);
+                systemExitCode = accountingService.account(userData.getLogin(), userData.getRole(),
+                        userData.getPath(), userData.getDateStart(), userData.getDateEnd(), userData.getVolume(), accounting);
             }
 
             if (!userData.isAuthenticated()) {
                 log.debug("Print help.");
                 cmdParserService.printHelp();
             }
-
         } catch (MyException e) {
             log.error("Database error", e);
             System.exit(255);
